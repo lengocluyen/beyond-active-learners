@@ -1,0 +1,72 @@
+{
+  "dataset": "oulab",
+  "weeks": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16
+  ],
+  "models": [
+    "stack_7_full",
+    "temporal_hgb",
+    "base_lr_profile",
+    "base_rf_gini"
+  ],
+  "folds": 5,
+  "repeats": 5,
+  "seed": 42,
+  "budgets": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "bootstrap_iterations": 2000,
+  "cluster_inference_unit": "presentation",
+  "fold_parallel_jobs": 4,
+  "hazard_days": 7,
+  "cohort_protocols": [
+    "activity_conditioned",
+    "static_full",
+    "cutoff_valid"
+  ],
+  "protocols": [
+    "activity_conditioned",
+    "static_full",
+    "cutoff_valid",
+    "activity_to_cutoff_valid",
+    "cutoff_valid_to_activity"
+  ],
+  "train_evaluation_cells": [
+    {
+      "protocol": "activity_conditioned",
+      "train_protocol": "activity_conditioned",
+      "eval_protocol": "activity_conditioned"
+    },
+    {
+      "protocol": "activity_to_cutoff_valid",
+      "train_protocol": "activity_conditioned",
+      "eval_protocol": "cutoff_valid"
+    },
+    {
+      "protocol": "static_full",
+      "train_protocol": "static_full",
+      "eval_protocol": "static_full"
+    },
+    {
+      "protocol": "cutoff_valid",
+      "train_protocol": "cutoff_valid",
+      "eval_protocol": "cutoff_valid"
+    },
+    {
+      "protocol": "cutoff_valid_to_activity",
+      "train_protocol": "cutoff_valid",
+      "eval_protocol": "activity_conditioned"
+    }
+  ],
+  "risk_set_note": "registration/withdrawal dates available"
+}

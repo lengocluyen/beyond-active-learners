@@ -1,0 +1,572 @@
+dataset,week,attribute,group,observability,n,share,risk_rate
+oulab,2,gender,F,eligible_active,11645,0.44068117313150423,0.41099184199227135
+oulab,2,gender,M,eligible_active,14780,0.5593188268684958,0.4506089309878214
+oulab,2,gender,F,eligible_silent,931,0.566301703163017,0.7293233082706767
+oulab,2,gender,M,eligible_silent,713,0.43369829683698297,0.8176718092566619
+oulab,2,region,East Anglian Region,eligible_active,2695,0.10198675496688742,0.41150278293135434
+oulab,2,region,East Midlands Region,eligible_active,1867,0.07065279091769158,0.4343867166577397
+oulab,2,region,Ireland,eligible_active,1033,0.039091769157994324,0.40561471442400776
+oulab,2,region,London Region,eligible_active,2436,0.09218543046357616,0.45648604269293924
+oulab,2,region,North Region,eligible_active,1496,0.05661305581835383,0.39438502673796794
+oulab,2,region,North Western Region,eligible_active,2246,0.08499526963103123,0.493766696349065
+oulab,2,region,Scotland,eligible_active,3005,0.11371807000946074,0.4515806988352745
+oulab,2,region,South East Region,eligible_active,1711,0.06474929044465469,0.3798947983635301
+oulab,2,region,South Region,eligible_active,2549,0.09646168401135288,0.37975676735974895
+oulab,2,region,South West Region,eligible_active,1984,0.07508041627246925,0.4002016129032258
+oulab,2,region,Wales,eligible_active,1809,0.06845789971617786,0.4947484798231067
+oulab,2,region,West Midlands Region,eligible_active,1997,0.07557237464522233,0.45968953430145215
+oulab,2,region,Yorkshire Region,eligible_active,1597,0.06043519394512772,0.44708829054477145
+oulab,2,region,East Anglian Region,eligible_silent,160,0.09732360097323602,0.71875
+oulab,2,region,East Midlands Region,eligible_silent,100,0.06082725060827251,0.75
+oulab,2,region,Ireland,eligible_silent,82,0.049878345498783457,0.6585365853658537
+oulab,2,region,London Region,eligible_silent,200,0.12165450121654502,0.81
+oulab,2,region,North Region,eligible_silent,71,0.04318734793187348,0.8309859154929577
+oulab,2,region,North Western Region,eligible_silent,147,0.08941605839416059,0.7891156462585034
+oulab,2,region,Scotland,eligible_silent,188,0.11435523114355231,0.7978723404255319
+oulab,2,region,South East Region,eligible_silent,89,0.054136253041362534,0.7415730337078652
+oulab,2,region,South Region,eligible_silent,126,0.07664233576642336,0.7063492063492064
+oulab,2,region,South West Region,eligible_silent,109,0.06630170316301703,0.7889908256880734
+oulab,2,region,Wales,eligible_silent,135,0.08211678832116788,0.7925925925925926
+oulab,2,region,West Midlands Region,eligible_silent,136,0.0827250608272506,0.7279411764705882
+oulab,2,region,Yorkshire Region,eligible_silent,101,0.06143552311435523,0.8316831683168316
+oulab,2,highest_education,A Level or Equivalent,eligible_active,11628,0.44003784295175025,0.3863949088407293
+oulab,2,highest_education,HE Qualification,eligible_active,4029,0.15246925260170294,0.352692975924547
+oulab,2,highest_education,Lower Than A Level,eligible_active,10240,0.38751182592242195,0.51806640625
+oulab,2,highest_education,No Formal quals,eligible_active,245,0.009271523178807948,0.5836734693877551
+oulab,2,highest_education,Post Graduate Qualification,eligible_active,283,0.010709555345316936,0.2968197879858657
+oulab,2,highest_education,A Level or Equivalent,eligible_silent,611,0.37165450121654503,0.7332242225859247
+oulab,2,highest_education,HE Qualification,eligible_silent,182,0.11070559610705596,0.7582417582417582
+oulab,2,highest_education,Lower Than A Level,eligible_silent,814,0.4951338199513382,0.7936117936117936
+oulab,2,highest_education,No Formal quals,eligible_silent,27,0.016423357664233577,0.9629629629629629
+oulab,2,highest_education,Post Graduate Qualification,eligible_silent,10,0.006082725060827251,0.4
+oulab,2,imd_band,0-10%,eligible_active,2478,0.09377483443708609,0.5472154963680388
+oulab,2,imd_band,10-20,eligible_active,2676,0.10126773888363293,0.5085949177877429
+oulab,2,imd_band,20-30%,eligible_active,2838,0.10739829706717124,0.4940098661028894
+oulab,2,imd_band,30-40%,eligible_active,2883,0.10910122989593188,0.4380853277835588
+oulab,2,imd_band,40-50%,eligible_active,2614,0.09892147587511826,0.43305279265493496
+oulab,2,imd_band,50-60%,eligible_active,2576,0.09748344370860927,0.42624223602484473
+oulab,2,imd_band,60-70%,eligible_active,2430,0.09195837275307474,0.3950617283950617
+oulab,2,imd_band,70-80%,eligible_active,2427,0.09184484389782403,0.40708693860733414
+oulab,2,imd_band,80-90%,eligible_active,2297,0.08692526017029328,0.3670004353504571
+oulab,2,imd_band,90-100%,eligible_active,2192,0.08295175023651845,0.34215328467153283
+oulab,2,imd_band,nan,eligible_active,1014,0.03837275307473983,0.28895463510848124
+oulab,2,imd_band,0-10%,eligible_silent,230,0.13990267639902676,0.8260869565217391
+oulab,2,imd_band,10-20,eligible_silent,216,0.13138686131386862,0.8055555555555556
+oulab,2,imd_band,20-30%,eligible_silent,223,0.1356447688564477,0.7757847533632287
+oulab,2,imd_band,30-40%,eligible_silent,172,0.10462287104622871,0.7848837209302325
+oulab,2,imd_band,40-50%,eligible_silent,159,0.09671532846715329,0.7861635220125787
+oulab,2,imd_band,50-60%,eligible_silent,165,0.10036496350364964,0.7272727272727273
+oulab,2,imd_band,60-70%,eligible_silent,132,0.08029197080291971,0.7424242424242424
+oulab,2,imd_band,70-80%,eligible_silent,123,0.07481751824817519,0.6747967479674797
+oulab,2,imd_band,80-90%,eligible_silent,124,0.07542579075425791,0.7016129032258065
+oulab,2,imd_band,90-100%,eligible_silent,77,0.04683698296836983,0.7792207792207793
+oulab,2,imd_band,nan,eligible_silent,23,0.013990267639902677,0.7391304347826086
+oulab,2,age_band,0-35,eligible_active,18457,0.6984673604541154,0.4540282819526467
+oulab,2,age_band,35-55,eligible_active,7776,0.2942667928098392,0.3864454732510288
+oulab,2,age_band,55<=,eligible_active,192,0.0072658467360454115,0.3177083333333333
+oulab,2,age_band,0-35,eligible_silent,1128,0.6861313868613139,0.7854609929078015
+oulab,2,age_band,35-55,eligible_silent,510,0.3102189781021898,0.7294117647058823
+oulab,2,age_band,55<=,eligible_silent,6,0.0036496350364963502,0.6666666666666666
+oulab,2,disability,N,eligible_active,23914,0.9049763481551562,0.42280672409467257
+oulab,2,disability,Y,eligible_active,2511,0.0950236518448439,0.5316606929510155
+oulab,2,disability,N,eligible_silent,1478,0.8990267639902676,0.7618403247631935
+oulab,2,disability,Y,eligible_silent,166,0.10097323600973236,0.8192771084337349
+oulab,4,gender,F,eligible_active,11937,0.44592625798498264,0.4094831197118204
+oulab,4,gender,M,eligible_active,14832,0.5540737420150174,0.44586030204962246
+oulab,4,gender,F,eligible_silent,426,0.556135770234987,0.8215962441314554
+oulab,4,gender,M,eligible_silent,340,0.44386422976501305,0.8970588235294118
+oulab,4,region,East Anglian Region,eligible_active,2729,0.10194628114610184,0.4063759618908025
+oulab,4,region,East Midlands Region,eligible_active,1878,0.0701557772049759,0.42864749733759316
+oulab,4,region,Ireland,eligible_active,1077,0.040233105457805673,0.39647168059424326
+oulab,4,region,London Region,eligible_active,2487,0.09290597332735627,0.4571773220747889
+oulab,4,region,North Region,eligible_active,1496,0.0558855392431544,0.3877005347593583
+oulab,4,region,North Western Region,eligible_active,2268,0.08472486831783033,0.4894179894179894
+oulab,4,region,Scotland,eligible_active,3066,0.11453547013336322,0.45107632093933464
+oulab,4,region,South East Region,eligible_active,1721,0.06429078411595503,0.3765252760023242
+oulab,4,region,South Region,eligible_active,2562,0.09570772161828982,0.3731459797033568
+oulab,4,region,South West Region,eligible_active,1998,0.07463857447046958,0.3968968968968969
+oulab,4,region,Wales,eligible_active,1854,0.06925921775187717,0.49406688241639696
+oulab,4,region,West Midlands Region,eligible_active,2030,0.07583398707460122,0.4566502463054187
+oulab,4,region,Yorkshire Region,eligible_active,1603,0.059882700138219586,0.4429195258889582
+oulab,4,region,East Anglian Region,eligible_silent,78,0.10182767624020887,0.8205128205128205
+oulab,4,region,East Midlands Region,eligible_silent,46,0.06005221932114883,0.8260869565217391
+oulab,4,region,Ireland,eligible_silent,29,0.037859007832898174,1.0
+oulab,4,region,London Region,eligible_silent,88,0.11488250652741515,0.8636363636363636
+oulab,4,region,North Region,eligible_silent,35,0.04569190600522193,0.8857142857142857
+oulab,4,region,North Western Region,eligible_silent,68,0.08877284595300261,0.8529411764705882
+oulab,4,region,Scotland,eligible_silent,95,0.12402088772845953,0.9578947368421052
+oulab,4,region,South East Region,eligible_silent,47,0.06135770234986945,0.7446808510638298
+oulab,4,region,South Region,eligible_silent,61,0.07963446475195822,0.7704918032786885
+oulab,4,region,South West Region,eligible_silent,52,0.06788511749347259,0.8461538461538461
+oulab,4,region,Wales,eligible_silent,56,0.0731070496083551,0.9285714285714286
+oulab,4,region,West Midlands Region,eligible_silent,59,0.07702349869451697,0.7627118644067796
+oulab,4,region,Yorkshire Region,eligible_silent,52,0.06788511749347259,0.8653846153846154
+oulab,4,highest_education,A Level or Equivalent,eligible_active,11791,0.440472187978632,0.3840217114748537
+oulab,4,highest_education,HE Qualification,eligible_active,4069,0.15200418394411447,0.34873433275989185
+oulab,4,highest_education,Lower Than A Level,eligible_active,10380,0.3877619634652023,0.5136801541425818
+oulab,4,highest_education,No Formal quals,eligible_active,244,0.009115021106503791,0.5778688524590164
+oulab,4,highest_education,Post Graduate Qualification,eligible_active,285,0.010646643505547462,0.28421052631578947
+oulab,4,highest_education,A Level or Equivalent,eligible_silent,249,0.32506527415143605,0.8313253012048193
+oulab,4,highest_education,HE Qualification,eligible_silent,79,0.1031331592689295,0.9240506329113924
+oulab,4,highest_education,Lower Than A Level,eligible_silent,419,0.5469973890339426,0.8520286396181385
+oulab,4,highest_education,No Formal quals,eligible_silent,16,0.020887728459530026,1.0
+oulab,4,highest_education,Post Graduate Qualification,eligible_silent,3,0.0039164490861618795,0.6666666666666666
+oulab,4,imd_band,0-10%,eligible_active,2531,0.09454966565803728,0.5440537337020941
+oulab,4,imd_band,10-20,eligible_active,2719,0.10157271470731069,0.5045972784111806
+oulab,4,imd_band,20-30%,eligible_active,2878,0.1075124210840898,0.48783877692842254
+oulab,4,imd_band,30-40%,eligible_active,2919,0.10904404348313347,0.4354230900993491
+oulab,4,imd_band,40-50%,eligible_active,2636,0.09847211326534425,0.4279210925644917
+oulab,4,imd_band,50-60%,eligible_active,2629,0.09821061675819044,0.4244960060859643
+oulab,4,imd_band,60-70%,eligible_active,2446,0.0913743509283126,0.3887980376124285
+oulab,4,imd_band,70-80%,eligible_active,2466,0.09212148380589488,0.4034874290348743
+oulab,4,imd_band,80-90%,eligible_active,2326,0.08689155366281893,0.3650042992261393
+oulab,4,imd_band,90-100%,eligible_active,2203,0.08229668646568793,0.3404448479346346
+oulab,4,imd_band,nan,eligible_active,1016,0.03795435018117972,0.28346456692913385
+oulab,4,imd_band,0-10%,eligible_silent,118,0.15404699738903394,0.923728813559322
+oulab,4,imd_band,10-20,eligible_silent,108,0.1409921671018277,0.8981481481481481
+oulab,4,imd_band,20-30%,eligible_silent,105,0.1370757180156658,0.8666666666666667
+oulab,4,imd_band,30-40%,eligible_silent,79,0.1031331592689295,0.8607594936708861
+oulab,4,imd_band,40-50%,eligible_silent,77,0.10052219321148825,0.8831168831168831
+oulab,4,imd_band,50-60%,eligible_silent,59,0.07702349869451697,0.8135593220338984
+oulab,4,imd_band,60-70%,eligible_silent,66,0.08616187989556136,0.803030303030303
+oulab,4,imd_band,70-80%,eligible_silent,53,0.06919060052219321,0.7924528301886793
+oulab,4,imd_band,80-90%,eligible_silent,52,0.06788511749347259,0.7115384615384616
+oulab,4,imd_band,90-100%,eligible_silent,37,0.048302872062663184,0.8378378378378378
+oulab,4,imd_band,nan,eligible_silent,12,0.015665796344647518,0.9166666666666666
+oulab,4,age_band,0-35,eligible_active,18663,0.6971870447159028,0.4501955741306328
+oulab,4,age_band,35-55,eligible_active,7915,0.2956778363031865,0.38420720151610865
+oulab,4,age_band,55<=,eligible_active,191,0.007135118980910755,0.3036649214659686
+oulab,4,age_band,0-35,eligible_silent,514,0.6710182767624021,0.867704280155642
+oulab,4,age_band,35-55,eligible_silent,250,0.3263707571801567,0.828
+oulab,4,age_band,55<=,eligible_silent,2,0.0026109660574412533,1.0
+oulab,4,disability,N,eligible_active,24237,0.9054129776980836,0.4194826092338161
+oulab,4,disability,Y,eligible_active,2532,0.0945870223019164,0.5268562401263823
+oulab,4,disability,N,eligible_silent,687,0.8968668407310705,0.8500727802037845
+oulab,4,disability,Y,eligible_silent,79,0.1031331592689295,0.8987341772151899
+oulab,6,gender,F,eligible_active,11819,0.44743516941131933,0.40181064387850074
+oulab,6,gender,M,eligible_active,14596,0.5525648305886807,0.43566730611126336
+oulab,6,gender,F,eligible_silent,349,0.5749588138385503,0.839541547277937
+oulab,6,gender,M,eligible_silent,258,0.42504118616144976,0.9341085271317829
+oulab,6,region,East Anglian Region,eligible_active,2693,0.10194964982017793,0.3965837356108429
+oulab,6,region,East Midlands Region,eligible_active,1856,0.07026310808252886,0.4202586206896552
+oulab,6,region,Ireland,eligible_active,1060,0.040128714745409806,0.3867924528301887
+oulab,6,region,London Region,eligible_active,2471,0.0935453340904789,0.45163901254552813
+oulab,6,region,North Region,eligible_active,1479,0.05599091425326519,0.37998647734956054
+oulab,6,region,North Western Region,eligible_active,2225,0.08423244368729889,0.47820224719101123
+oulab,6,region,Scotland,eligible_active,3035,0.11489683891728185,0.44481054365733114
+oulab,6,region,South East Region,eligible_active,1694,0.06413022903653227,0.36363636363636365
+oulab,6,region,South Region,eligible_active,2530,0.09577891349611962,0.3632411067193676
+oulab,6,region,South West Region,eligible_active,1980,0.07495741056218058,0.3898989898989899
+oulab,6,region,Wales,eligible_active,1828,0.06920310429680106,0.48577680525164113
+oulab,6,region,West Midlands Region,eligible_active,1989,0.07529812606473595,0.4444444444444444
+oulab,6,region,Yorkshire Region,eligible_active,1575,0.059625212947189095,0.4311111111111111
+oulab,6,region,East Anglian Region,eligible_silent,63,0.10378912685337727,0.8571428571428571
+oulab,6,region,East Midlands Region,eligible_silent,36,0.05930807248764415,0.8611111111111112
+oulab,6,region,Ireland,eligible_silent,26,0.042833607907743,1.0
+oulab,6,region,London Region,eligible_silent,61,0.10049423393739704,0.8852459016393442
+oulab,6,region,North Region,eligible_silent,30,0.04942339373970346,0.9
+oulab,6,region,North Western Region,eligible_silent,57,0.09390444810543658,0.8771929824561403
+oulab,6,region,Scotland,eligible_silent,73,0.12026359143327842,0.9726027397260274
+oulab,6,region,South East Region,eligible_silent,35,0.057660626029654036,0.7714285714285715
+oulab,6,region,South Region,eligible_silent,49,0.08072487644151564,0.8163265306122449
+oulab,6,region,South West Region,eligible_silent,38,0.06260296540362438,0.868421052631579
+oulab,6,region,Wales,eligible_silent,49,0.08072487644151564,0.9591836734693877
+oulab,6,region,West Midlands Region,eligible_silent,48,0.07907742998352553,0.75
+oulab,6,region,Yorkshire Region,eligible_silent,42,0.06919275123558484,0.9047619047619048
+oulab,6,highest_education,A Level or Equivalent,eligible_active,11656,0.44126443308726104,0.37568634179821553
+oulab,6,highest_education,HE Qualification,eligible_active,4037,0.15282983153511262,0.3423334159028982
+oulab,6,highest_education,Lower Than A Level,eligible_active,10200,0.3861442362294151,0.5031372549019608
+oulab,6,highest_education,No Formal quals,eligible_active,242,0.009161461290933181,0.5743801652892562
+oulab,6,highest_education,Post Graduate Qualification,eligible_active,280,0.010600037857278062,0.2714285714285714
+oulab,6,highest_education,A Level or Equivalent,eligible_silent,192,0.3163097199341021,0.8541666666666666
+oulab,6,highest_education,HE Qualification,eligible_silent,58,0.09555189456342669,0.9655172413793104
+oulab,6,highest_education,Lower Than A Level,eligible_silent,343,0.5650741350906096,0.8775510204081632
+oulab,6,highest_education,No Formal quals,eligible_silent,13,0.0214168039538715,1.0
+oulab,6,highest_education,Post Graduate Qualification,eligible_silent,1,0.0016474464579901153,0.0
+oulab,6,imd_band,0-10%,eligible_active,2505,0.09483248154457695,0.5385229540918164
+oulab,6,imd_band,10-20,eligible_active,2688,0.1017603634298694,0.4973958333333333
+oulab,6,imd_band,20-30%,eligible_active,2835,0.10732538330494037,0.47901234567901235
+oulab,6,imd_band,30-40%,eligible_active,2879,0.10899110353965549,0.4254949635290031
+oulab,6,imd_band,40-50%,eligible_active,2597,0.09831535112625402,0.41778975741239893
+oulab,6,imd_band,50-60%,eligible_active,2591,0.09808820745788378,0.41451177151678886
+oulab,6,imd_band,60-70%,eligible_active,2416,0.09146318379708498,0.3795529801324503
+oulab,6,imd_band,70-80%,eligible_active,2428,0.09191747113382548,0.392504118616145
+oulab,6,imd_band,80-90%,eligible_active,2298,0.08699602498580353,0.35422106179286333
+oulab,6,imd_band,90-100%,eligible_active,2174,0.08230172250615181,0.3311867525298988
+oulab,6,imd_band,nan,eligible_active,1004,0.038008707173954194,0.2749003984063745
+oulab,6,imd_band,0-10%,eligible_silent,99,0.1630971993410214,0.9292929292929293
+oulab,6,imd_band,10-20,eligible_silent,90,0.14827018121911037,0.9222222222222223
+oulab,6,imd_band,20-30%,eligible_silent,87,0.14332784184514002,0.8735632183908046
+oulab,6,imd_band,30-40%,eligible_silent,61,0.10049423393739704,0.9180327868852459
+oulab,6,imd_band,40-50%,eligible_silent,58,0.09555189456342669,0.9137931034482759
+oulab,6,imd_band,50-60%,eligible_silent,45,0.07413509060955518,0.8444444444444444
+oulab,6,imd_band,60-70%,eligible_silent,53,0.08731466227347612,0.8301886792452831
+oulab,6,imd_band,70-80%,eligible_silent,42,0.06919275123558484,0.8095238095238095
+oulab,6,imd_band,80-90%,eligible_silent,37,0.060955518945634266,0.7837837837837838
+oulab,6,imd_band,90-100%,eligible_silent,26,0.042833607907743,0.8076923076923077
+oulab,6,imd_band,nan,eligible_silent,9,0.014827018121911038,0.8888888888888888
+oulab,6,age_band,0-35,eligible_active,18403,0.6966874881696006,0.44096071292724015
+oulab,6,age_band,35-55,eligible_active,7823,0.2961574862767367,0.3754314201712898
+oulab,6,age_band,55<=,eligible_active,189,0.007155025553662692,0.2962962962962963
+oulab,6,age_band,0-35,eligible_silent,409,0.6738056013179572,0.8997555012224939
+oulab,6,age_band,35-55,eligible_silent,197,0.3245469522240527,0.8375634517766497
+oulab,6,age_band,55<=,eligible_silent,1,0.0016474464579901153,1.0
+oulab,6,disability,N,eligible_active,23930,0.9059246640166572,0.4104889260342666
+oulab,6,disability,Y,eligible_active,2485,0.09407533598334279,0.5171026156941649
+oulab,6,disability,N,eligible_silent,546,0.899505766062603,0.8772893772893773
+oulab,6,disability,Y,eligible_silent,61,0.10049423393739704,0.9016393442622951
+oulab,8,gender,F,eligible_active,11651,0.44830505213744276,0.3911252253025491
+oulab,8,gender,M,eligible_active,14338,0.5516949478625572,0.42509415539126794
+oulab,8,gender,F,eligible_silent,300,0.5617977528089888,0.8866666666666667
+oulab,8,gender,M,eligible_silent,234,0.43820224719101125,0.9529914529914529
+oulab,8,region,East Anglian Region,eligible_active,2650,0.10196621647620147,0.3849056603773585
+oulab,8,region,East Midlands Region,eligible_active,1821,0.0700681057370426,0.40801757276221856
+oulab,8,region,Ireland,eligible_active,1046,0.04024779714494594,0.37858508604206503
+oulab,8,region,London Region,eligible_active,2442,0.0939628304282581,0.44348894348894347
+oulab,8,region,North Region,eligible_active,1456,0.056023702335603526,0.3695054945054945
+oulab,8,region,North Western Region,eligible_active,2170,0.08349686405787064,0.4645161290322581
+oulab,8,region,Scotland,eligible_active,2992,0.11512563007426219,0.4364973262032086
+oulab,8,region,South East Region,eligible_active,1672,0.06433491092385239,0.3522727272727273
+oulab,8,region,South Region,eligible_active,2490,0.0958097656700912,0.3522088353413655
+oulab,8,region,South West Region,eligible_active,1957,0.07530108892223633,0.3822176801226367
+oulab,8,region,Wales,eligible_active,1797,0.06914463811612605,0.4763494713411241
+oulab,8,region,West Midlands Region,eligible_active,1960,0.0754165223748509,0.4331632653061224
+oulab,8,region,Yorkshire Region,eligible_active,1536,0.05910192773865866,0.416015625
+oulab,8,region,East Anglian Region,eligible_silent,59,0.1104868913857678,0.8983050847457628
+oulab,8,region,East Midlands Region,eligible_silent,29,0.054307116104868915,0.896551724137931
+oulab,8,region,Ireland,eligible_silent,24,0.0449438202247191,1.0
+oulab,8,region,London Region,eligible_silent,52,0.09737827715355805,0.9423076923076923
+oulab,8,region,North Region,eligible_silent,25,0.04681647940074907,0.92
+oulab,8,region,North Western Region,eligible_silent,53,0.09925093632958802,0.8867924528301887
+oulab,8,region,Scotland,eligible_silent,68,0.12734082397003746,0.9852941176470589
+oulab,8,region,South East Region,eligible_silent,28,0.052434456928838954,0.8928571428571429
+oulab,8,region,South Region,eligible_silent,38,0.07116104868913857,0.8157894736842105
+oulab,8,region,South West Region,eligible_silent,35,0.06554307116104868,0.8857142857142857
+oulab,8,region,Wales,eligible_silent,45,0.08426966292134831,0.9777777777777777
+oulab,8,region,West Midlands Region,eligible_silent,40,0.0749063670411985,0.85
+oulab,8,region,Yorkshire Region,eligible_silent,38,0.07116104868913857,0.9210526315789473
+oulab,8,highest_education,A Level or Equivalent,eligible_active,11498,0.4424179460540998,0.36632457818751085
+oulab,8,highest_education,HE Qualification,eligible_active,3982,0.15321866943706952,0.3332496233048719
+oulab,8,highest_education,Lower Than A Level,eligible_active,9999,0.38473969756435417,0.49114911491149116
+oulab,8,highest_education,No Formal quals,eligible_active,233,0.008965331486398092,0.5579399141630901
+oulab,8,highest_education,Post Graduate Qualification,eligible_active,277,0.010658355458078419,0.259927797833935
+oulab,8,highest_education,A Level or Equivalent,eligible_silent,168,0.3146067415730337,0.8869047619047619
+oulab,8,highest_education,HE Qualification,eligible_silent,49,0.09176029962546817,0.9591836734693877
+oulab,8,highest_education,Lower Than A Level,eligible_silent,304,0.5692883895131086,0.9210526315789473
+oulab,8,highest_education,No Formal quals,eligible_silent,13,0.024344569288389514,1.0
+oulab,8,imd_band,0-10%,eligible_active,2458,0.09457847550886914,0.5284784377542717
+oulab,8,imd_band,10-20,eligible_active,2644,0.10173534957097233,0.48789712556732223
+oulab,8,imd_band,20-30%,eligible_active,2783,0.10708376620878064,0.468199784405318
+oulab,8,imd_band,30-40%,eligible_active,2827,0.10877679018046096,0.41422002122391227
+oulab,8,imd_band,40-50%,eligible_active,2560,0.09850321289776444,0.408984375
+oulab,8,imd_band,50-60%,eligible_active,2554,0.0982723459925353,0.4048551292090838
+oulab,8,imd_band,60-70%,eligible_active,2372,0.09126938320058486,0.3663575042158516
+oulab,8,imd_band,70-80%,eligible_active,2386,0.09180807264611951,0.37929589270746017
+oulab,8,imd_band,80-90%,eligible_active,2268,0.08726769017661318,0.3439153439153439
+oulab,8,imd_band,90-100%,eligible_active,2145,0.0825349186194159,0.32214452214452216
+oulab,8,imd_band,nan,eligible_active,992,0.03816999499788372,0.2651209677419355
+oulab,8,imd_band,0-10%,eligible_silent,91,0.1704119850187266,0.9560439560439561
+oulab,8,imd_band,10-20,eligible_silent,82,0.15355805243445692,0.9512195121951219
+oulab,8,imd_band,20-30%,eligible_silent,78,0.14606741573033707,0.8974358974358975
+oulab,8,imd_band,30-40%,eligible_silent,56,0.10486891385767791,0.9285714285714286
+oulab,8,imd_band,40-50%,eligible_silent,52,0.09737827715355805,0.9230769230769231
+oulab,8,imd_band,50-60%,eligible_silent,36,0.06741573033707865,0.8888888888888888
+oulab,8,imd_band,60-70%,eligible_silent,48,0.0898876404494382,0.8958333333333334
+oulab,8,imd_band,70-80%,eligible_silent,33,0.06179775280898876,0.9393939393939394
+oulab,8,imd_band,80-90%,eligible_silent,30,0.056179775280898875,0.8333333333333334
+oulab,8,imd_band,90-100%,eligible_silent,21,0.03932584269662921,0.7619047619047619
+oulab,8,imd_band,nan,eligible_silent,7,0.013108614232209739,1.0
+oulab,8,age_band,0-35,eligible_active,18085,0.6958713301781523,0.4303013547138513
+oulab,8,age_band,35-55,eligible_active,7720,0.2970487513948209,0.36515544041450776
+oulab,8,age_band,55<=,eligible_active,184,0.0070799184270268194,0.27717391304347827
+oulab,8,age_band,0-35,eligible_silent,370,0.6928838951310862,0.927027027027027
+oulab,8,age_band,35-55,eligible_silent,163,0.3052434456928839,0.8895705521472392
+oulab,8,age_band,55<=,eligible_silent,1,0.0018726591760299626,1.0
+oulab,8,disability,N,eligible_active,23557,0.9064219477471238,0.399966039818313
+oulab,8,disability,Y,eligible_active,2432,0.09357805225287621,0.5057565789473685
+oulab,8,disability,N,eligible_silent,483,0.9044943820224719,0.9151138716356108
+oulab,8,disability,Y,eligible_silent,51,0.09550561797752809,0.9215686274509803
+oulab,10,gender,F,eligible_active,11549,0.45048172563092403,0.38315005628192916
+oulab,10,gender,M,eligible_active,14088,0.549518274369076,0.4142532651902328
+oulab,10,gender,F,eligible_silent,239,0.545662100456621,0.9790794979079498
+oulab,10,gender,M,eligible_silent,199,0.454337899543379,0.9899497487437185
+oulab,10,region,East Anglian Region,eligible_active,2620,0.10219604477903031,0.37595419847328243
+oulab,10,region,East Midlands Region,eligible_active,1796,0.07005499863478566,0.3986636971046771
+oulab,10,region,Ireland,eligible_active,1031,0.04021531380426727,0.36954413191076624
+oulab,10,region,London Region,eligible_active,2413,0.09412177711900768,0.43555739743058436
+oulab,10,region,North Region,eligible_active,1430,0.05577875726489059,0.35664335664335667
+oulab,10,region,North Western Region,eligible_active,2144,0.08362912977337442,0.4552238805970149
+oulab,10,region,Scotland,eligible_active,2935,0.11448297382689082,0.4252129471890971
+oulab,10,region,South East Region,eligible_active,1660,0.06475016577602684,0.3457831325301205
+oulab,10,region,South Region,eligible_active,2461,0.09599407106915786,0.3425436814303129
+oulab,10,region,South West Region,eligible_active,1925,0.07508678862581425,0.36987012987012985
+oulab,10,region,Wales,eligible_active,1769,0.06900183328782619,0.46749576031656304
+oulab,10,region,West Midlands Region,eligible_active,1943,0.07578889885712056,0.42563046834791557
+oulab,10,region,Yorkshire Region,eligible_active,1510,0.05889924718180754,0.40463576158940395
+oulab,10,region,East Anglian Region,eligible_silent,46,0.1050228310502283,0.9782608695652174
+oulab,10,region,East Midlands Region,eligible_silent,26,0.0593607305936073,0.9615384615384616
+oulab,10,region,Ireland,eligible_silent,24,0.0547945205479452,1.0
+oulab,10,region,London Region,eligible_silent,40,0.091324200913242,1.0
+oulab,10,region,North Region,eligible_silent,19,0.04337899543378995,1.0
+oulab,10,region,North Western Region,eligible_silent,41,0.09360730593607305,1.0
+oulab,10,region,Scotland,eligible_silent,65,0.14840182648401826,1.0
+oulab,10,region,South East Region,eligible_silent,21,0.04794520547945205,0.9523809523809523
+oulab,10,region,South Region,eligible_silent,31,0.07077625570776255,0.9354838709677419
+oulab,10,region,South West Region,eligible_silent,24,0.0547945205479452,1.0
+oulab,10,region,Wales,eligible_silent,42,0.0958904109589041,1.0
+oulab,10,region,West Midlands Region,eligible_silent,30,0.0684931506849315,0.9666666666666667
+oulab,10,region,Yorkshire Region,eligible_silent,29,0.06621004566210045,0.9655172413793104
+oulab,10,highest_education,A Level or Equivalent,eligible_active,11360,0.44310956820220776,0.3571302816901408
+oulab,10,highest_education,HE Qualification,eligible_active,3916,0.152747981433085,0.32175689479060265
+oulab,10,highest_education,Lower Than A Level,eligible_active,9859,0.38456137613605335,0.4817932853230551
+oulab,10,highest_education,No Formal quals,eligible_active,228,0.008893396263213324,0.5482456140350878
+oulab,10,highest_education,Post Graduate Qualification,eligible_active,274,0.010687677965440574,0.2518248175182482
+oulab,10,highest_education,A Level or Equivalent,eligible_silent,128,0.2922374429223744,0.9765625
+oulab,10,highest_education,HE Qualification,eligible_silent,43,0.09817351598173515,0.9767441860465116
+oulab,10,highest_education,Lower Than A Level,eligible_silent,256,0.5844748858447488,0.98828125
+oulab,10,highest_education,No Formal quals,eligible_silent,11,0.02511415525114155,1.0
+oulab,10,imd_band,0-10%,eligible_active,2414,0.09416078324296914,0.5186412593206297
+oulab,10,imd_band,10-20,eligible_active,2597,0.10129890392791668,0.47747400847131305
+oulab,10,imd_band,20-30%,eligible_active,2738,0.10679876740648282,0.4565376186997809
+oulab,10,imd_band,30-40%,eligible_active,2787,0.10871006748059445,0.40437746681019016
+oulab,10,imd_band,40-50%,eligible_active,2518,0.0982174201349612,0.397934868943606
+oulab,10,imd_band,50-60%,eligible_active,2519,0.09825642625892266,0.3953949980150854
+oulab,10,imd_band,60-70%,eligible_active,2354,0.09182041580528143,0.3598130841121495
+oulab,10,imd_band,70-80%,eligible_active,2363,0.09217147092093458,0.37240795598815063
+oulab,10,imd_band,80-90%,eligible_active,2241,0.08741272379763623,0.33422579205711733
+oulab,10,imd_band,90-100%,eligible_active,2127,0.08296602566602956,0.3140573577809121
+oulab,10,imd_band,nan,eligible_active,979,0.03818699535827125,0.2553626149131767
+oulab,10,imd_band,0-10%,eligible_silent,77,0.17579908675799086,0.987012987012987
+oulab,10,imd_band,10-20,eligible_silent,71,0.16210045662100456,0.9859154929577465
+oulab,10,imd_band,20-30%,eligible_silent,62,0.1415525114155251,0.9838709677419355
+oulab,10,imd_band,30-40%,eligible_silent,49,0.11187214611872145,1.0
+oulab,10,imd_band,40-50%,eligible_silent,43,0.09817351598173515,0.9767441860465116
+oulab,10,imd_band,50-60%,eligible_silent,28,0.0639269406392694,0.9642857142857143
+oulab,10,imd_band,60-70%,eligible_silent,35,0.07990867579908675,0.9714285714285714
+oulab,10,imd_band,70-80%,eligible_silent,29,0.06621004566210045,1.0
+oulab,10,imd_band,80-90%,eligible_silent,26,0.0593607305936073,0.9615384615384616
+oulab,10,imd_band,90-100%,eligible_silent,13,0.02968036529680365,1.0
+oulab,10,imd_band,nan,eligible_silent,5,0.01141552511415525,1.0
+oulab,10,age_band,0-35,eligible_active,17828,0.6954011779849436,0.42057437738389053
+oulab,10,age_band,35-55,eligible_active,7627,0.2974997074540703,0.3558410908614134
+oulab,10,age_band,55<=,eligible_active,182,0.0070991145609860746,0.2692307692307692
+oulab,10,age_band,0-35,eligible_silent,302,0.6894977168949772,0.9966887417218543
+oulab,10,age_band,35-55,eligible_silent,135,0.3082191780821918,0.9555555555555556
+oulab,10,age_band,55<=,eligible_silent,1,0.00228310502283105,1.0
+oulab,10,disability,N,eligible_active,23261,0.9073214494675664,0.39082584583637847
+oulab,10,disability,Y,eligible_active,2376,0.0926785505324336,0.49242424242424243
+oulab,10,disability,N,eligible_silent,398,0.908675799086758,0.9849246231155779
+oulab,10,disability,Y,eligible_silent,40,0.091324200913242,0.975
+oulab,12,gender,F,eligible_active,11398,0.4505138339920949,0.37497806632742586
+oulab,12,gender,M,eligible_active,13902,0.5494861660079051,0.40627247878003164
+oulab,12,gender,F,eligible_silent,235,0.5477855477855478,0.9787234042553191
+oulab,12,gender,M,eligible_silent,194,0.4522144522144522,0.9948453608247423
+oulab,12,region,East Anglian Region,eligible_active,2590,0.10237154150197629,0.3687258687258687
+oulab,12,region,East Midlands Region,eligible_active,1772,0.0700395256916996,0.3905191873589165
+oulab,12,region,Ireland,eligible_active,1011,0.039960474308300395,0.3570722057368942
+oulab,12,region,London Region,eligible_active,2369,0.09363636363636364,0.4250738708315745
+oulab,12,region,North Region,eligible_active,1413,0.0558498023715415,0.3481953290870488
+oulab,12,region,North Western Region,eligible_active,2121,0.08383399209486166,0.4493163602074493
+oulab,12,region,Scotland,eligible_active,2898,0.11454545454545455,0.4178743961352657
+oulab,12,region,South East Region,eligible_active,1636,0.06466403162055336,0.33618581907090467
+oulab,12,region,South Region,eligible_active,2440,0.09644268774703557,0.33647540983606555
+oulab,12,region,South West Region,eligible_active,1897,0.0749802371541502,0.36056931997891406
+oulab,12,region,Wales,eligible_active,1748,0.06909090909090909,0.4610983981693364
+oulab,12,region,West Midlands Region,eligible_active,1912,0.07557312252964427,0.41631799163179917
+oulab,12,region,Yorkshire Region,eligible_active,1493,0.05901185770750988,0.39785666443402545
+oulab,12,region,East Anglian Region,eligible_silent,45,0.1048951048951049,0.9777777777777777
+oulab,12,region,East Midlands Region,eligible_silent,26,0.06060606060606061,0.9615384615384616
+oulab,12,region,Ireland,eligible_silent,24,0.055944055944055944,1.0
+oulab,12,region,London Region,eligible_silent,38,0.08857808857808858,1.0
+oulab,12,region,North Region,eligible_silent,18,0.04195804195804196,1.0
+oulab,12,region,North Western Region,eligible_silent,41,0.09557109557109557,1.0
+oulab,12,region,Scotland,eligible_silent,66,0.15384615384615385,1.0
+oulab,12,region,South East Region,eligible_silent,21,0.04895104895104895,0.9523809523809523
+oulab,12,region,South Region,eligible_silent,27,0.06293706293706294,0.9629629629629629
+oulab,12,region,South West Region,eligible_silent,23,0.053613053613053616,1.0
+oulab,12,region,Wales,eligible_silent,42,0.0979020979020979,1.0
+oulab,12,region,West Midlands Region,eligible_silent,30,0.06993006993006994,0.9666666666666667
+oulab,12,region,Yorkshire Region,eligible_silent,28,0.06526806526806526,0.9642857142857143
+oulab,12,highest_education,A Level or Equivalent,eligible_active,11234,0.4440316205533597,0.3497418550827844
+oulab,12,highest_education,HE Qualification,eligible_active,3858,0.1524901185770751,0.3115603939865215
+oulab,12,highest_education,Lower Than A Level,eligible_active,9713,0.3839130434782609,0.474003912282508
+oulab,12,highest_education,No Formal quals,eligible_active,224,0.008853754940711462,0.5401785714285714
+oulab,12,highest_education,Post Graduate Qualification,eligible_active,271,0.010711462450592886,0.24354243542435425
+oulab,12,highest_education,A Level or Equivalent,eligible_silent,126,0.2937062937062937,0.9841269841269841
+oulab,12,highest_education,HE Qualification,eligible_silent,44,0.10256410256410256,0.9772727272727273
+oulab,12,highest_education,Lower Than A Level,eligible_silent,248,0.578088578088578,0.9879032258064516
+oulab,12,highest_education,No Formal quals,eligible_silent,11,0.02564102564102564,1.0
+oulab,12,imd_band,0-10%,eligible_active,2369,0.09363636363636364,0.5094976783452934
+oulab,12,imd_band,10-20,eligible_active,2565,0.10138339920948616,0.4709551656920078
+oulab,12,imd_band,20-30%,eligible_active,2693,0.10644268774703557,0.4470850352766432
+oulab,12,imd_band,30-40%,eligible_active,2757,0.10897233201581027,0.3978962640551324
+oulab,12,imd_band,40-50%,eligible_active,2481,0.09806324110671936,0.3889560661023781
+oulab,12,imd_band,50-60%,eligible_active,2489,0.09837944664031621,0.38810767376456407
+oulab,12,imd_band,60-70%,eligible_active,2322,0.09177865612648221,0.35099052540913006
+oulab,12,imd_band,70-80%,eligible_active,2337,0.09237154150197628,0.3654257595207531
+oulab,12,imd_band,80-90%,eligible_active,2218,0.08766798418972332,0.327321911632101
+oulab,12,imd_band,90-100%,eligible_active,2098,0.08292490118577076,0.30457578646329836
+oulab,12,imd_band,nan,eligible_active,971,0.03837944664031621,0.2481977342945417
+oulab,12,imd_band,0-10%,eligible_silent,76,0.17715617715617715,0.9868421052631579
+oulab,12,imd_band,10-20,eligible_silent,70,0.16317016317016317,0.9857142857142858
+oulab,12,imd_band,20-30%,eligible_silent,58,0.1351981351981352,1.0
+oulab,12,imd_band,30-40%,eligible_silent,48,0.11188811188811189,1.0
+oulab,12,imd_band,40-50%,eligible_silent,41,0.09557109557109557,0.975609756097561
+oulab,12,imd_band,50-60%,eligible_silent,28,0.06526806526806526,0.9642857142857143
+oulab,12,imd_band,60-70%,eligible_silent,35,0.08158508158508158,0.9714285714285714
+oulab,12,imd_band,70-80%,eligible_silent,29,0.0675990675990676,1.0
+oulab,12,imd_band,80-90%,eligible_silent,27,0.06293706293706294,0.9629629629629629
+oulab,12,imd_band,90-100%,eligible_silent,12,0.027972027972027972,1.0
+oulab,12,imd_band,nan,eligible_silent,5,0.011655011655011656,1.0
+oulab,12,age_band,0-35,eligible_active,17593,0.6953754940711463,0.412834650144944
+oulab,12,age_band,35-55,eligible_active,7527,0.2975098814229249,0.34701740401222264
+oulab,12,age_band,55<=,eligible_active,180,0.0071146245059288534,0.2611111111111111
+oulab,12,age_band,0-35,eligible_silent,297,0.6923076923076923,0.9966329966329966
+oulab,12,age_band,35-55,eligible_silent,131,0.30536130536130535,0.9618320610687023
+oulab,12,age_band,55<=,eligible_silent,1,0.002331002331002331,1.0
+oulab,12,disability,N,eligible_active,22962,0.9075889328063241,0.38280637575124116
+oulab,12,disability,Y,eligible_active,2338,0.0924110671936759,0.48417450812660395
+oulab,12,disability,N,eligible_silent,392,0.9137529137529138,0.9872448979591837
+oulab,12,disability,Y,eligible_silent,37,0.08624708624708624,0.972972972972973
+oulab,14,gender,F,eligible_active,11249,0.45111485402630735,0.3664325717841586
+oulab,14,gender,M,eligible_active,13687,0.5488851459736926,0.3969460071600789
+oulab,14,gender,F,eligible_silent,228,0.5454545454545454,0.9912280701754386
+oulab,14,gender,M,eligible_silent,190,0.45454545454545453,0.9947368421052631
+oulab,14,region,East Anglian Region,eligible_active,2557,0.10254250882258582,0.3605788032850997
+oulab,14,region,East Midlands Region,eligible_active,1736,0.06961822264998396,0.3778801843317972
+oulab,14,region,Ireland,eligible_active,997,0.0399823548283606,0.34804413239719156
+oulab,14,region,London Region,eligible_active,2343,0.09396053897978826,0.4186939820742638
+oulab,14,region,North Region,eligible_active,1400,0.05614372794353545,0.34214285714285714
+oulab,14,region,North Western Region,eligible_active,2097,0.08409528392685274,0.4430138292799237
+oulab,14,region,Scotland,eligible_active,2851,0.11433269169072827,0.40827779726411784
+oulab,14,region,South East Region,eligible_active,1619,0.06492621110041706,0.32859789993823346
+oulab,14,region,South Region,eligible_active,2410,0.0966474173885146,0.3278008298755187
+oulab,14,region,South West Region,eligible_active,1859,0.07455085017645172,0.3474986551909629
+oulab,14,region,Wales,eligible_active,1709,0.06853545075393006,0.44880046811000585
+oulab,14,region,West Midlands Region,eligible_active,1879,0.07535290343278794,0.40606705694518364
+oulab,14,region,Yorkshire Region,eligible_active,1479,0.05931183830606352,0.39148073022312374
+oulab,14,region,East Anglian Region,eligible_silent,45,0.1076555023923445,0.9777777777777777
+oulab,14,region,East Midlands Region,eligible_silent,25,0.05980861244019139,0.96
+oulab,14,region,Ireland,eligible_silent,24,0.05741626794258373,1.0
+oulab,14,region,London Region,eligible_silent,37,0.08851674641148326,1.0
+oulab,14,region,North Region,eligible_silent,17,0.04066985645933014,1.0
+oulab,14,region,North Western Region,eligible_silent,40,0.09569377990430622,1.0
+oulab,14,region,Scotland,eligible_silent,66,0.15789473684210525,1.0
+oulab,14,region,South East Region,eligible_silent,20,0.04784688995215311,1.0
+oulab,14,region,South Region,eligible_silent,26,0.06220095693779904,1.0
+oulab,14,region,South West Region,eligible_silent,23,0.05502392344497608,1.0
+oulab,14,region,Wales,eligible_silent,40,0.09569377990430622,1.0
+oulab,14,region,West Midlands Region,eligible_silent,29,0.06937799043062201,0.9655172413793104
+oulab,14,region,Yorkshire Region,eligible_silent,26,0.06220095693779904,1.0
+oulab,14,highest_education,A Level or Equivalent,eligible_active,11089,0.4446984279756176,0.34114888628370454
+oulab,14,highest_education,HE Qualification,eligible_active,3815,0.1529916586461341,0.30380078636959373
+oulab,14,highest_education,Lower Than A Level,eligible_active,9541,0.3826195059351941,0.4643119169898334
+oulab,14,highest_education,No Formal quals,eligible_active,221,0.008862688482515238,0.5339366515837104
+oulab,14,highest_education,Post Graduate Qualification,eligible_active,270,0.01082771896053898,0.24074074074074073
+oulab,14,highest_education,A Level or Equivalent,eligible_silent,123,0.2942583732057416,0.991869918699187
+oulab,14,highest_education,HE Qualification,eligible_silent,44,0.10526315789473684,0.9772727272727273
+oulab,14,highest_education,Lower Than A Level,eligible_silent,242,0.5789473684210527,0.9958677685950413
+oulab,14,highest_education,No Formal quals,eligible_silent,9,0.0215311004784689,1.0
+oulab,14,imd_band,0-10%,eligible_active,2325,0.09323869104908566,0.5002150537634409
+oulab,14,imd_band,10-20,eligible_active,2528,0.1013795316008983,0.4632120253164557
+oulab,14,imd_band,20-30%,eligible_active,2652,0.10635226179018287,0.4385369532428356
+oulab,14,imd_band,30-40%,eligible_active,2711,0.10871831889637472,0.38767982294356323
+oulab,14,imd_band,40-50%,eligible_active,2442,0.09793070259865255,0.3787878787878788
+oulab,14,imd_band,50-60%,eligible_active,2455,0.0984520372152711,0.37922606924643587
+oulab,14,imd_band,60-70%,eligible_active,2294,0.09199550850176452,0.34263295553618134
+oulab,14,imd_band,70-80%,eligible_active,2300,0.09223612447866539,0.3552173913043478
+oulab,14,imd_band,80-90%,eligible_active,2192,0.0879050368944498,0.3193430656934307
+oulab,14,imd_band,90-100%,eligible_active,2071,0.08305261469361566,0.29550941574118783
+oulab,14,imd_band,nan,eligible_active,966,0.03873917228103946,0.2443064182194617
+oulab,14,imd_band,0-10%,eligible_silent,73,0.17464114832535885,0.9863013698630136
+oulab,14,imd_band,10-20,eligible_silent,69,0.16507177033492823,0.9855072463768116
+oulab,14,imd_band,20-30%,eligible_silent,56,0.1339712918660287,1.0
+oulab,14,imd_band,30-40%,eligible_silent,47,0.11244019138755981,1.0
+oulab,14,imd_band,40-50%,eligible_silent,40,0.09569377990430622,1.0
+oulab,14,imd_band,50-60%,eligible_silent,27,0.0645933014354067,1.0
+oulab,14,imd_band,60-70%,eligible_silent,34,0.08133971291866028,1.0
+oulab,14,imd_band,70-80%,eligible_silent,29,0.06937799043062201,1.0
+oulab,14,imd_band,80-90%,eligible_silent,27,0.0645933014354067,0.9629629629629629
+oulab,14,imd_band,90-100%,eligible_silent,12,0.028708133971291867,1.0
+oulab,14,imd_band,nan,eligible_silent,4,0.009569377990430622,1.0
+oulab,14,age_band,0-35,eligible_active,17338,0.6952999679178697,0.4041988695351252
+oulab,14,age_band,35-55,eligible_active,7419,0.2975216554379211,0.33710742687693757
+oulab,14,age_band,55<=,eligible_active,179,0.007178376644209176,0.2569832402234637
+oulab,14,age_band,0-35,eligible_silent,289,0.6913875598086124,0.9965397923875432
+oulab,14,age_band,35-55,eligible_silent,128,0.3062200956937799,0.984375
+oulab,14,age_band,55<=,eligible_silent,1,0.0023923444976076554,1.0
+oulab,14,disability,N,eligible_active,22660,0.9087263394289381,0.37449249779346866
+oulab,14,disability,Y,eligible_active,2276,0.09127366057106191,0.46968365553602814
+oulab,14,disability,N,eligible_silent,382,0.9138755980861244,0.9921465968586387
+oulab,14,disability,Y,eligible_silent,36,0.0861244019138756,1.0
+oulab,16,gender,F,eligible_active,11073,0.4513512411853422,0.3563623227670911
+oulab,16,gender,M,eligible_active,13460,0.5486487588146578,0.38670133729569095
+oulab,16,gender,F,eligible_silent,223,0.5492610837438424,0.9910313901345291
+oulab,16,gender,M,eligible_silent,183,0.45073891625615764,0.994535519125683
+oulab,16,region,East Anglian Region,eligible_active,2516,0.10255574124648432,0.3501589825119237
+oulab,16,region,East Midlands Region,eligible_active,1701,0.06933518118452696,0.36507936507936506
+oulab,16,region,Ireland,eligible_active,983,0.04006847919129336,0.3387589013224822
+oulab,16,region,London Region,eligible_active,2316,0.09440345656870337,0.4119170984455959
+oulab,16,region,North Region,eligible_active,1371,0.0558839114661884,0.3282275711159737
+oulab,16,region,North Western Region,eligible_active,2061,0.08400929360453267,0.43328481319747697
+oulab,16,region,Scotland,eligible_active,2791,0.11376513267843313,0.39555714797563596
+oulab,16,region,South East Region,eligible_active,1596,0.06505523172869196,0.31892230576441105
+oulab,16,region,South Region,eligible_active,2369,0.09656381200831533,0.31616715913887716
+oulab,16,region,South West Region,eligible_active,1827,0.07447112053152896,0.33607006020799124
+oulab,16,region,Wales,eligible_active,1688,0.0688052826804712,0.4419431279620853
+oulab,16,region,West Midlands Region,eligible_active,1853,0.07553091753964049,0.3971937398812736
+oulab,16,region,Yorkshire Region,eligible_active,1461,0.05955243957118982,0.3839835728952772
+oulab,16,region,East Anglian Region,eligible_silent,43,0.10591133004926108,0.9767441860465116
+oulab,16,region,East Midlands Region,eligible_silent,24,0.059113300492610835,0.9583333333333334
+oulab,16,region,Ireland,eligible_silent,22,0.054187192118226604,1.0
+oulab,16,region,London Region,eligible_silent,37,0.09113300492610837,1.0
+oulab,16,region,North Region,eligible_silent,14,0.034482758620689655,1.0
+oulab,16,region,North Western Region,eligible_silent,40,0.09852216748768473,1.0
+oulab,16,region,Scotland,eligible_silent,65,0.16009852216748768,1.0
+oulab,16,region,South East Region,eligible_silent,19,0.046798029556650245,1.0
+oulab,16,region,South Region,eligible_silent,26,0.06403940886699508,1.0
+oulab,16,region,South West Region,eligible_silent,23,0.05665024630541872,1.0
+oulab,16,region,Wales,eligible_silent,40,0.09852216748768473,1.0
+oulab,16,region,West Midlands Region,eligible_silent,28,0.06896551724137931,0.9642857142857143
+oulab,16,region,Yorkshire Region,eligible_silent,25,0.06157635467980296,1.0
+oulab,16,highest_education,A Level or Equivalent,eligible_active,10919,0.4450739819834509,0.33079952376591265
+oulab,16,highest_education,HE Qualification,eligible_active,3756,0.15309990624872621,0.2928647497337593
+oulab,16,highest_education,Lower Than A Level,eligible_active,9375,0.3821383442709819,0.45482666666666666
+oulab,16,highest_education,No Formal quals,eligible_active,216,0.008804467452003424,0.5231481481481481
+oulab,16,highest_education,Post Graduate Qualification,eligible_active,267,0.010883300044837566,0.23220973782771537
+oulab,16,highest_education,A Level or Equivalent,eligible_silent,119,0.29310344827586204,0.9915966386554622
+oulab,16,highest_education,HE Qualification,eligible_silent,43,0.10591133004926108,0.9767441860465116
+oulab,16,highest_education,Lower Than A Level,eligible_silent,235,0.5788177339901478,0.9957446808510638
+oulab,16,highest_education,No Formal quals,eligible_silent,9,0.022167487684729065,1.0
+oulab,16,imd_band,0-10%,eligible_active,2279,0.0928952839033139,0.4896884598508118
+oulab,16,imd_band,10-20,eligible_active,2481,0.10112909142787266,0.45304312777106004
+oulab,16,imd_band,20-30%,eligible_active,2603,0.10610198508131904,0.4279677295428352
+oulab,16,imd_band,30-40%,eligible_active,2664,0.10858843190804222,0.3768768768768769
+oulab,16,imd_band,40-50%,eligible_active,2407,0.09811274609709371,0.3697548815953469
+oulab,16,imd_band,50-60%,eligible_active,2424,0.0988056902947051,0.3712871287128713
+oulab,16,imd_band,60-70%,eligible_active,2257,0.091998532588758,0.331856446610545
+oulab,16,imd_band,70-80%,eligible_active,2261,0.09216157828231362,0.3440955329500221
+oulab,16,imd_band,80-90%,eligible_active,2167,0.08833000448375657,0.31149053991693587
+oulab,16,imd_band,90-100%,eligible_active,2039,0.08311254228997676,0.28445316331535064
+oulab,16,imd_band,nan,eligible_active,951,0.03876411364284841,0.2323869610935857
+oulab,16,imd_band,0-10%,eligible_silent,70,0.1724137931034483,0.9857142857142858
+oulab,16,imd_band,10-20,eligible_silent,69,0.16995073891625614,0.9855072463768116
+oulab,16,imd_band,20-30%,eligible_silent,52,0.12807881773399016,1.0
+oulab,16,imd_band,30-40%,eligible_silent,46,0.11330049261083744,1.0
+oulab,16,imd_band,40-50%,eligible_silent,40,0.09852216748768473,1.0
+oulab,16,imd_band,50-60%,eligible_silent,27,0.0665024630541872,1.0
+oulab,16,imd_band,60-70%,eligible_silent,33,0.0812807881773399,1.0
+oulab,16,imd_band,70-80%,eligible_silent,29,0.07142857142857142,1.0
+oulab,16,imd_band,80-90%,eligible_silent,26,0.06403940886699508,0.9615384615384616
+oulab,16,imd_band,90-100%,eligible_silent,10,0.024630541871921183,1.0
+oulab,16,imd_band,nan,eligible_silent,4,0.009852216748768473,1.0
+oulab,16,age_band,0-35,eligible_active,17058,0.6953083601679371,0.39436041739946065
+oulab,16,age_band,35-55,eligible_active,7298,0.29747686789222677,0.32611674431351056
+oulab,16,age_band,55<=,eligible_active,177,0.0072147719398361395,0.24858757062146894
+oulab,16,age_band,0-35,eligible_silent,278,0.6847290640394089,0.9964028776978417
+oulab,16,age_band,35-55,eligible_silent,127,0.312807881773399,0.984251968503937
+oulab,16,age_band,55<=,eligible_silent,1,0.0024630541871921183,1.0
+oulab,16,disability,N,eligible_active,22308,0.9093058329596869,0.36457772996234533
+oulab,16,disability,Y,eligible_active,2225,0.09069416704031305,0.45752808988764043
+oulab,16,disability,N,eligible_silent,371,0.9137931034482759,0.9919137466307277
+oulab,16,disability,Y,eligible_silent,35,0.08620689655172414,1.0

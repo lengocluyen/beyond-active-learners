@@ -1,0 +1,9 @@
+model,family,features,references,doi,scope
+base_lr_profile,logistic_regression,enrolment profile,Waheed et al. (2020),10.1016/j.chb.2019.106189,family adaptation
+base_lr_clickstream,logistic_regression,cumulative clickstream,Hassan et al. (2019); Waheed et al. (2020),10.1002/int.22129; 10.1016/j.chb.2019.106189,family adaptation
+base_lr_weekly,logistic_regression,weekly clickstream and assessment sequence,Hassan et al. (2019),10.1002/int.22129,family adaptation
+base_rf_gini,random_forest_gini,non-leaky profile plus weekly activity and assessment,Junejo et al. (2025),10.1038/s41598-025-00256-3,architecture-family transplant
+base_rf_entropy,random_forest_entropy,non-leaky profile plus weekly activity and assessment,Junejo et al. (2025),10.1038/s41598-025-00256-3,architecture-family transplant
+base_svm,linear_svm_calibrated,cumulative clickstream,Waheed et al. (2020),10.1016/j.chb.2019.106189,family adaptation
+base_knn,k_nearest_neighbours,cumulative clickstream,"Junejo et al. (2025), literature comparator family",10.1038/s41598-025-00256-3,family adaptation
+base_dffnn,deep_feedforward_neural_network,non-leaky profile plus weekly activity and assessment,Waheed et al. (2020); Junejo et al. (2025),10.1016/j.chb.2019.106189; 10.1038/s41598-025-00256-3,architecture-family transplant

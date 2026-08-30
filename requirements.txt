@@ -1,0 +1,9 @@
+# Exact third-party set used by the risk-set evaluation pipeline.
+# Verified by AST scan of every module the paper's entry points import.
+numpy>=1.26
+pandas>=2.1
+scikit-learn>=1.3
+scipy>=1.11
+joblib>=1.3
+threadpoolctl>=3.2
+matplotlib>=3.8

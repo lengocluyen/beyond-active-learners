@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+data/raw/
+data/processed/
+results/**/predictions.csv.gz
+results/**/discrete_hazard_predictions.csv.gz
+results/**/checkpoints/
+*.pdf
+!figures/*.pdf

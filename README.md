@@ -152,6 +152,7 @@ scripts/                  entry points
   active_eligible_comparator.py  A→A / A→(A∩V) / A→V decomposition
   aggregate_decomposition_ci.py  aggregate cluster bootstrap
   run_graph_ablation.py          supplementary ablation
+paper/make_figures.py     figure generation
 results/oulad_2x2/              aggregate CSVs from the reported run
 results/oulad_learner_disjoint/ learner-disjoint sensitivity arm
 ```

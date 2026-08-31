@@ -244,39 +244,6 @@ python scripts/run_cohort_exchange.py     --dataset oulab --split-unit learner  
 python scripts/run_cohort_exchange.py --dataset oulab --cluster module ...
 ```
 
-## What is included and what is not
-
-**Included:** all pipeline code, and the aggregate result CSVs behind every
-table and figure — cohort composition, the full decomposition (per cell, per
-metric, with cluster-bootstrap intervals), decision overlap, budget response,
-ranking stability, hazard summaries, and subgroup coverage.
-
-**Not included:** the two source datasets (licensing — see links above), and
-the per-learner out-of-fold prediction files (`predictions.csv.gz`, 382 MB;
-`discrete_hazard_predictions.csv.gz`, 145 MB). These will be deposited with a
-persistent identifier on acceptance; contact the corresponding author for
-earlier access.
-
-## Design choices reviewers may want to check
-
-- **Matched folds.** One fold assignment per repeat is reused across every
-  model, protocol, and design cell, so contrasts are paired.
-- **No refitting inside the bootstrap.** Intervals quantify
-  evaluation-population sampling variability conditional on stored out-of-fold
-  predictions. With 22 presentation clusters, percentile-bootstrap coverage may
-  be inaccurate; intervals are interpreted descriptively, not as exact coverage
-  statements.
-- **Withdrawal timing is never a predictor.** It defines eligibility masks and
-  hazard labels only.
-- **Fixed capacity.** Budget comparisons use the same presentation-specific
-  number of slots for every protocol, so a smaller candidate set cannot appear
-  more precise by changing the operational constraint.
-- **Cutoff-first truncation.** Every source is truncated before joins or
-  aggregation; the shared-feature invariant is asserted at each landmark.
-- **Scope.** The study estimates within-landmark protocol contrasts under
-  presentation-held-out evaluation. It does **not** estimate prospective
-  future-cohort performance: folds are not chronological.
-
 ## Citation
 
 ```bibtex

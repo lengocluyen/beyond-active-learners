@@ -28,6 +28,13 @@ an institution could actually help. We call this **risk-set misspecification**
 and treat cohort definition as part of the estimand rather than as
 preprocessing.
 
+![Comparison of activity-conditioned and cutoff-valid cohort selection across five learner states](figures/fig1_cohort.png)
+
+*Figure 1. Activity conditioning and intervention eligibility select different
+populations. Event-first construction omits eligible-silent learners while
+retaining learners whose withdrawal is already known at the prediction
+cutoff.*
+
 The framing is deliberately narrow. Risk-set and landmark methods are long
 established in survival analysis; the contribution here is operationalizing
 **population validity** as an evaluation dimension for educational early
@@ -51,17 +58,24 @@ features become structural zeros and a `no_activity` indicator is set. All
 protocols are **masks over one shared, roster-first feature matrix**, so a
 learner present in two protocols has a bit-identical feature vector in both.
 
+![Six-stage roster-first pipeline from raw enrollment data to population-valid evaluation](figures/fig2_risk_set_pipeline.png)
+
+*Figure 2. The roster-first evaluation pipeline. Cutoff-first filtering,
+explicit eligibility masks, and a shared feature representation preserve the
+enrollment population until the matched training-by-evaluation design is
+applied.*
+
 ## The 2×2 training-by-evaluation design
 
 Comparing activity-conditioned against cutoff-valid results changes *two*
 things at once — the fitted model and the scored population. This pipeline
 fits both estimators and scores both populations, giving four cells:
 
-```
-                       evaluated on A          evaluated on V
-    trained on A          M_AA                    M_AV
-    trained on V          M_VA                    M_VV
-```
+![Two-by-two design separating changes in the fitted model from changes in the scored population](figures/fig_design_matrix.png)
+
+*Figure 3. Rows hold the fitted model fixed to isolate the evaluation-population
+effect; columns hold the scored population fixed to isolate the training effect.
+The two corner-to-corner traversals both recover the joint contrast.*
 
 Each component is then estimated along both traversals and averaged, so the
 attribution does not depend on the order in which the two changes are applied:
@@ -152,7 +166,6 @@ scripts/                  entry points
   active_eligible_comparator.py  A→A / A→(A∩V) / A→V decomposition
   aggregate_decomposition_ci.py  aggregate cluster bootstrap
   run_graph_ablation.py          supplementary ablation
-paper/make_figures.py     figure generation
 results/oulad_2x2/              aggregate CSVs from the reported run
 results/oulad_learner_disjoint/ learner-disjoint sensitivity arm
 ```

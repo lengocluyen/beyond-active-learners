@@ -1,0 +1,10 @@
+# Recorded fitting environment: Python 3.10.12.
+# These measured package versions are taken from the fitted-run protocol.
+# Matplotlib and threadpoolctl versions were not recorded; their compatible
+# minimum requirements remain flexible through requirements.txt.
+-r requirements.txt
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.7.2
+scipy==1.14.1
+joblib==1.4.2

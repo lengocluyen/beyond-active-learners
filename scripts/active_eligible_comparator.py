@@ -14,7 +14,7 @@ candidate pool.
 Usage
 -----
     python scripts/active_eligible_comparator.py \
-        --results results/cohort_exchange_2x2_clean/oulab --budget 0.05
+        --results results/oulad_2x2 --budget 0.05
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def _select(frame: pd.DataFrame, capacity: dict[tuple, int]) -> pd.DataFrame:
 def evaluate(results: Path, budget: float) -> pd.DataFrame:
     cols = ["week", "model", "protocol", "risk", "cutoff_valid",
             "membership_class", "risk_score", *KEY]
-    preds = pd.read_csv(results / "predictions.csv.gz", usecols=cols)
+    preds = pd.read_csv(results / "predictions.csv.gz", usecols=cols, float_precision="round_trip")
     preds["cutoff_valid"] = preds["cutoff_valid"].astype(bool)
 
     rows = []
@@ -99,7 +99,7 @@ def evaluate(results: Path, budget: float) -> pd.DataFrame:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--results", type=Path,
-                    default=Path("results/cohort_exchange_2x2_clean/oulab"))
+                    default=Path("results/oulad_2x2"))
     ap.add_argument("--budget", type=float, default=0.05)
     args = ap.parse_args()
 

@@ -1,265 +1,232 @@
-# Beyond Active Learners: Population-Valid Evaluation of Educational Early-Warning Systems
+# Beyond Active Learners
 
-Reference implementation, analysis pipeline, and aggregate results for the
-manuscript submitted to *IEEE Transactions on Learning Technologies*.
+Code and aggregate results accompanying *Beyond Active Learners:
+Population-Valid Evaluation of Educational Early-Warning Systems*.
 
-**Ngọc Luyên Lê**¹² · **Marie-Hélène Abel**² · **Bertrand Laforge**³
+Ngọc Luyện Lê, Marie-Hélène Abel, and Bertrand Laforge.
 
-¹ Gamaizer, Le Raincy, France ² Université de technologie de Compiègne, CNRS,
-Heudiasyc ³ Sorbonne Université, CNRS UMR 7585, LPNHE
+Educational early-warning systems can select their analysis population from
+recorded activity. This can omit eligible learners with no digital events and
+retain learners who have already withdrawn. The repository compares those
+activity-conditioned populations with administratively eligible populations
+using matched training and evaluation folds.
 
----
+## Design
 
-## What problem does this address?
+At landmark week `w`, the cutoff is day `7*w`. The activity-conditioned
+population contains learners with an admissible event before that cutoff. The
+cutoff-valid population contains learners registered before the cutoff who
+have not withdrawn before it; records with missing registration dates follow
+the documented eligibility convention. A static-full arm retains all labeled
+enrolments as a retrospective sensitivity analysis. A separate hazard task
+predicts withdrawal during the following seven days among eligible learners.
 
-Longitudinal learning-analytics pipelines commonly build their modeling table
-by aggregating a virtual-learning-environment (VLE) event table and then
-joining outcomes. This *event-first* construction implicitly requires a learner
-to have generated at least one recorded event before the prediction cutoff.
-Two things follow, and they pull in opposite directions:
+The four main cells cross activity (`A`) and valid (`V`) populations for
+training and evaluation:
 
-| | What happens | Consequence |
-|---|---|---|
-| **Eligible-silent exclusion** | A learner still enrolled and still supportable, but with no logged event, has no row to aggregate | They vanish from the modeling table without being counted as an exclusion |
-| **Known-outcome contamination** | A learner who withdrew *before* the cutoff still has earlier events | They remain in the table although their outcome is already realized and no intervention is possible |
+```text
+                   Evaluate on A       Evaluate on V
+Train on A              M_AA                M_AV
+Train on V              M_VA                M_VV
 
-The result is that the population a model is evaluated on is not the population
-an institution could actually help. We call this **risk-set misspecification**
-and treat cohort definition as part of the estimand rather than as
-preprocessing.
-
-![Comparison of activity-conditioned and cutoff-valid cohort selection across five learner states](figures/fig1_cohort.png)
-
-*Figure 1. Activity conditioning and intervention eligibility select different
-populations. Event-first construction omits eligible-silent learners while
-retaining learners whose withdrawal is already known at the prediction
-cutoff.*
-
-The framing is deliberately narrow. Risk-set and landmark methods are long
-established in survival analysis; the contribution here is operationalizing
-**population validity** as an evaluation dimension for educational early
-warning, and separating the part of a metric difference caused by *who is
-scored* from the part caused by *who the model was fitted on*.
-
-## The four cohort protocols
-
-At landmark week `w` with cutoff day `t = 7w`, for learner–presentation `i`
-with registration `R_i`, withdrawal `W_i`, and activity indicator `A_i(t)`:
-
-| Protocol | Definition | Role |
-|---|---|---|
-| Activity-conditioned `C_act` | `A_i(t) = 1` | Reproduces conventional event-first construction |
-| Static-full `C_full` | all of `U` | Sensitivity analysis |
-| **Cutoff-valid `C_valid`** | `R_i < t` and `W_i ≥ t` | **Primary intervention population** |
-| Discrete hazard `C_haz` | eligible person–weeks | Withdrawal in `[t, t+7)` |
-
-Silence is represented as an observed state, not as absence: event-derived
-features become structural zeros and a `no_activity` indicator is set. All
-protocols are **masks over one shared, roster-first feature matrix**, so a
-learner present in two protocols has a bit-identical feature vector in both.
-
-![Six-stage roster-first pipeline from raw enrollment data to population-valid evaluation](figures/fig2_risk_set_pipeline.png)
-
-*Figure 2. The roster-first evaluation pipeline. Cutoff-first filtering,
-explicit eligibility masks, and a shared feature representation preserve the
-enrollment population until the matched training-by-evaluation design is
-applied.*
-
-## The 2×2 training-by-evaluation design
-
-Comparing activity-conditioned against cutoff-valid results changes *two*
-things at once — the fitted model and the scored population. This pipeline
-fits both estimators and scores both populations, giving four cells:
-
-![Two-by-two design separating changes in the fitted model from changes in the scored population](figures/fig_design_matrix.png)
-
-*Figure 3. Rows hold the fitted model fixed to isolate the evaluation-population
-effect; columns hold the scored population fixed to isolate the training effect.
-The two corner-to-corner traversals both recover the joint contrast.*
-
-Each component is then estimated along both traversals and averaged, so the
-attribution does not depend on the order in which the two changes are applied:
-
-```
-    Δ_eval  = ½[(M_AA − M_AV) + (M_VA − M_VV)]
-    Δ_train = ½[(M_AA − M_VA) + (M_AV − M_VV)]
-    Δ_eval + Δ_train = M_AA − M_VV        (exactly, within every cell)
+Evaluation component = ((M_AA - M_AV) + (M_VA - M_VV)) / 2
+Training component   = ((M_AA - M_VA) + (M_AV - M_VV)) / 2
 ```
 
-The identity holds cellwise to a maximum residual of 8.7 × 10⁻¹⁹. Because the
-median is not linear, medians and identity-preserving means are reported side
-by side.
+These components add to `M_AA - M_VV` within each configuration–landmark cell.
+Their arithmetic means also add; separately calculated medians need not.
 
-## What the study found
+## Reported OULAD results
 
-Medians across 88 model–landmark cells (11 configurations × 8 landmarks) on
-OULAD. Reproduce with `scripts/report_paper_numbers.py`.
+Medians across eleven configurations and eight landmarks:
 
-| Metric | Joint (A→A vs V→V) | Δ_eval | Δ_train |
-|---|---|---|---|
-| ROC-AUC | +0.0345 | **+0.0339** | −0.0005 |
-| PR-AUC (adverse) | +0.0732 | **+0.0715** | +0.0001 |
-| Brier | −0.0109 | −0.0121 | +0.0003 |
-| ECE | −0.0009 | −0.0055 | +0.0024 |
+| Metric | Joint difference | Evaluation component | Training component |
+|---|---:|---:|---:|
+| ROC-AUC | +0.0248 | +0.0272 | −0.0003 |
+| Adverse-outcome average precision | +0.0591 | +0.0587 | +0.0001 |
+| Brier score | −0.0064 | −0.0073 | +0.0006 |
+| Expected calibration error | −0.0003 | −0.0034 | +0.0022 |
 
-**The apparent advantage of activity conditioning is almost entirely about who
-is scored, not about who the model was trained on.** Refitting on the
-cutoff-valid population moves the median by ≤ 0.0005 ROC-AUC.
+Evaluation-population components generally exceed training-population components
+for discrimination and Brier score. This is not universal: the direction varies
+at early landmarks, profile-only logistic regression is an exception, and
+calibration attribution is less stable. Learner-disjoint validation supports
+the discrimination and Brier findings for the four configurations tested.
 
-Three further findings:
+At a 5% intervention budget, median coverage-adjusted recall is 0.0578 for
+activity-conditioned scoring, 0.1113 when the same fitted models score the valid
+population, and 0.1126 when models are also trained on the valid population.
+These are retrospective decision diagnostics, not estimates of an intervention's
+causal effect.
 
-- **The evaluation component is a net of two opposing errors.** Administrative
-  noneligibility contributes +0.0406 ROC-AUC and eligible-silent exclusion
-  −0.0081. A small net difference therefore does not imply a small population
-  problem — ECE has a joint difference of only −0.0009 while its components are
-  −0.0055 and +0.0024.
-- **Decisions move more than metrics.** At a 5 % intervention budget, top-list
-  Jaccard agreement between A→A and V→V is 0.187. Changing the *candidate
-  population* (A→A vs A→V, 0.236) disagrees far more than *refitting*
-  (A→V vs V→V, 0.706).
-- **Allocation validity is not a metric artifact.** The noneligible allocation
-  rate is 0.554 under A→A and exactly zero for both valid-scored
-  configurations; coverage-adjusted recall rises from 0.048 to 0.114.
+## Read the published aggregate results
 
-### Does learner overlap explain the result?
+The repository includes aggregate OULAD results in:
 
-No. 12.3 % of OULAD learners appear in more than one presentation, so
-presentation-grouped folds are not learner-disjoint. Refitting the full 2x2
-design with **learner-grouped folds** (four configurations x eight landmarks,
-everything else held fixed) leaves the discrimination conclusion unchanged:
-
-| Metric | Fold grouping | Joint | Delta_eval | Delta_train |
-|---|---|---|---|---|
-| ROC-AUC | presentation | +0.0307 | +0.0301 | -0.0006 |
-| ROC-AUC | **learner-disjoint** | +0.0283 | **+0.0287** | **-0.0000** |
-| PR-AUC | presentation | +0.0652 | +0.0667 | -0.0003 |
-| PR-AUC | **learner-disjoint** | +0.0609 | +0.0624 | +0.0004 |
-
-Per-configuration evaluation components move by at most 0.0040 ROC-AUC, and
-profile-only logistic regression keeps its negative evaluation component
-(-0.0045 vs -0.0042), so the one sign-reversing family is not a leakage
-artifact either. **Expected calibration error does not reproduce** - its
-evaluation component changes sign - so the claim is scoped to discrimination
-and Brier score. Full results in `results/oulad_learner_disjoint/`.
-
-Boundary analyses: KDD Cup 2015 (no withdrawal timing — an *observability
-proxy*, not an identified risk set) shows activity conditioning retaining only
-49.0 % of the roster at week 1, converging to 100 % by week 5. A person-week
-discrete-hazard benchmark preserves eligibility at every landmark.
-
-## Repository layout
-
-```
-src/                      pipeline modules (12, ~183 KB)
-  cohort_exchange.py        protocols, 2×2 design, decomposition, bootstrap
-  full_evaluation.py        model families and shared heads
-  pcg_ut.py                 weekly evidence loading
-  evidence_mapping.py       raw -> processed weekly evidence
-  features_static.py        enrolment/demographic features
-  make_labels.py            outcome labels
-  kdd_preprocess.py         KDD Cup 2015 preparation
-  paths.py, splitters.py, traversal.py, pcg_ut_graph.py,
-  build_competency_graph.py
-scripts/                  entry points
-  run_cohort_exchange.py         main benchmark
-  report_paper_numbers.py        regenerates every number quoted in the paper
-  active_eligible_comparator.py  A→A / A→(A∩V) / A→V decomposition
-  aggregate_decomposition_ci.py  aggregate cluster bootstrap
-  run_graph_ablation.py          supplementary ablation
-results/oulad_2x2/              aggregate CSVs from the reported run
-results/oulad_learner_disjoint/ learner-disjoint sensitivity arm
+```text
+results/oulad_2x2/
+results/oulad_learner_disjoint/
+results/summary/
+results/kdd/
 ```
 
-## Reproducing the results
-
-### 1. Environment
+After installing the dependencies, summarize these tables without obtaining
+the datasets or fitting models:
 
 ```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+python3 scripts/report_paper_numbers.py --results results/oulad_2x2 --skip-invariant
+python3 scripts/report_paper_numbers.py --results results/oulad_learner_disjoint --skip-invariant
 ```
 
-Python ≥ 3.10. The dependency list is the exact set imported by the modules
-above — no deep-learning framework is required.
+The shared-prediction invariant check and bootstrap regeneration require the
+individual prediction files produced by a local experiment. Those files are
+not included in this aggregate release.
 
-### 2. Data
+`results/summary/` contains the canonical aggregate intervals, the matched
+four-configuration comparison, and the exploratory eligibility/silence and
+paired-recall summaries. The OULAD result directories retain the original
+fitted-run protocol separately from the postprocessing provenance. KDD tables
+are the unchanged boundary analysis rather than part of the OULAD rerun.
 
-Neither dataset is redistributed here.
-
-- **OULAD** — download from <https://analyse.kmi.open.ac.uk/open_dataset>
-  (CC BY 4.0) and place the CSVs in `data/raw/Oulab/`.
-- **KDD Cup 2015** — obtain from the competition archive and place in
-  `data/raw/kdd/`.
-
-Then build the processed tables:
+Regenerate the main numerical figures from aggregate tables alone:
 
 ```bash
-python -m src.make_labels
-python -m src.evidence_mapping
-python -m src.features_static
-python -m src.kdd_preprocess          # KDD arm only
+python3 scripts/regenerate_tlt_figures.py --results results/oulad_2x2 --output-dir figures
 ```
 
-### 3. Main benchmark
+## Reproduce the OULAD experiment
+
+### Environment
+
+Use Python 3.10 or newer. From the repository root on Linux:
 
 ```bash
-python scripts/run_cohort_exchange.py \
-    --dataset oulab --folds 5 --repeats 5 --bootstrap 2000 \
-    --seed 42 --jobs 5 --output results/cohort_exchange_2x2 --verbose
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
 ```
 
-This fits 11 configurations × 8 landmarks × 4 design cells with fixed
-presentation-held-out folds. It is the expensive step (hours on a
-multi-core machine). `--fit-only` stops after checkpointed predictions;
-rerunning the same command resumes from checkpoints.
+The reported models were fitted with Python 3.10.12, NumPy 1.26.4, pandas 2.2.3,
+scikit-learn 1.7.2, SciPy 1.14.1, and joblib 1.4.2. To use these recorded
+versions in a Python 3.10 environment, install `requirements-fit.txt` instead.
+Matplotlib and threadpoolctl versions were not recorded and remain flexible.
+Different library versions or numerical platforms can produce different fitted
+predictions; exact numerical identity is not promised by the minimum-version
+environment.
 
-### 4. Verify the paper's numbers
+### Raw data and initial features
+
+Obtain OULAD from the [Open University dataset page](https://analyse.kmi.open.ac.uk/open_dataset).
+Place the supplied CSVs under `data/raw/Oulab/`. The pipeline uses
+`studentInfo.csv`, `studentRegistration.csv`, `studentAssessment.csv`,
+`assessments.csv`, `studentVle.csv`, and `vle.csv`.
+
+Initialize the required fixed features, then build and validate the temporal
+features without fitting models:
 
 ```bash
-python scripts/report_paper_numbers.py --results results/oulad_2x2
+python3 -u scripts/prepare_oulad.py
 ```
 
-Every aggregate figure quoted in the manuscript is regenerated by this script
-from the CSVs in `results/oulad_2x2/`, which are included in this repository.
-**Reviewers can run this step without downloading the datasets or refitting
-anything.**
-
-Supporting analyses:
+This creates missing labels, course-week metadata, static features, and all
+eight traversal caches before rebuilding assessment, VLE, and behavioral
+features. Existing fixed feature files are retained. To repeat only the temporal
+feature validation after those prerequisites exist:
 
 ```bash
-python scripts/active_eligible_comparator.py  --results results/oulad_2x2
-python scripts/aggregate_decomposition_ci.py  --results results/oulad_2x2 --n-boot 2000
-python scripts/run_graph_ablation.py                     # supplementary S4
-python paper/make_figures.py                             # all figures
+python3 -u scripts/run_tlt_corrected.py --prepare-only
 ```
 
-### Sensitivity arms
+Assessments are assigned to their actual submission dates. Non-banked
+submissions and VLE events enter the landmark window only when
+`0 <= event_day < 7*w`; banked and pre-start assessment records are excluded.
+The validation reconstructs weekly assessment and VLE aggregates from raw
+timestamps and checks activity membership at every landmark. Previous derived
+files are preserved in timestamped backups.
+
+Scores are assumed available at submission: the dataset does not provide grade
+release timestamps. Cohort-relative and traversal features use presentation
+information available within the landmark window and are transductive.
+
+### Fit and analyze
+
+After preprocessing succeeds:
 
 ```bash
-# Learner-disjoint cross-validation. 3,278 learners span more than one fold
-# under presentation grouping; none do under learner grouping.
-python scripts/run_cohort_exchange.py     --dataset oulab --split-unit learner     --models stack_7_full temporal_hgb base_lr_profile base_rf_gini     --folds 5 --repeats 5 --bootstrap 2000 --seed 42 --no-hazard     --output results/cohort_exchange_learner_disjoint
-
-# Coarser inferential clustering (7 modules instead of 22 presentations)
-python scripts/run_cohort_exchange.py --dataset oulab --cluster module ...
+python3 -u scripts/run_tlt_corrected.py --skip-rebuild --jobs 5
 ```
 
-## Citation
+This runs the eleven-model presentation-grouped experiment, the four-model
+learner-disjoint analysis, the hazard benchmark, and aggregate reporting. Both
+landmark analyses use five folds, five repeats, seed 42, and 2,000 paired
+presentation-bootstrap draws. The launcher records logs and stops when a stage
+fails; it does not change your interactive shell settings.
 
-```bibtex
-@article{Le2026RiskSet,
-  author  = {L\^e, Ng\d{o}c Luy\d{\^e}n and Abel, Marie-H\'el\`ene
-             and Laforge, Bertrand},
-  title   = {Beyond Active Learners: Population-Valid Evaluation of
-             Educational Early-Warning Systems},
-  journal = {IEEE Transactions on Learning Technologies},
-  year    = {2026},
-  note    = {Under review}
-}
+New outputs are written under:
+
+```text
+results/tlt_submission_time_v1/main/oulab/
+results/tlt_submission_time_v1/learner_disjoint/oulab/
+results/tlt_submission_time_v1/logs/
 ```
 
-## License
+The same command can resume interrupted fitting when the input manifest,
+source provenance, and configuration match. Use `--output-root` for another
+fresh experiment directory. Existing public aggregate tables are historical
+outputs, not prediction checkpoints for resuming a private run.
 
-Code released under the MIT License (see `LICENSE`). OULAD is distributed by
-The Open University under CC BY 4.0; KDD Cup 2015 remains subject to its own
-competition terms. Neither dataset is redistributed here.
+After generating local predictions, recompute the exploratory eligibility-first
+metric split and paired gains without refitting:
+
+```bash
+python3 scripts/analyze_population_components.py --results results/tlt_submission_time_v1/main/oulab --output results/tlt_submission_time_v1/summary --budget 0.05
+```
+
+Reproduce the main, matched-four, learner-disjoint, and paired between-grouping
+aggregate intervals from those same local predictions:
+
+```bash
+python3 scripts/aggregate_protocol_comparison.py --main results/tlt_submission_time_v1/main/oulab --learner results/tlt_submission_time_v1/learner_disjoint/oulab --output results/tlt_submission_time_v1/summary --n-boot 2000 --seed 42
+```
+
+The figure generator's optional `--extra` panels require locally generated
+membership and prediction files, including hazard incidence and calibration
+inputs; the default command above uses only public aggregate inputs.
+
+## Optional KDD boundary analysis
+
+KDD Cup 2015 lacks the withdrawal dates needed to identify the same eligibility
+set. Its analysis concerns selection by observed activity rather than a fully
+identified administrative risk set.
+
+Arrange the competition files as:
+
+```text
+data/raw/KDDCup2015/date.csv
+data/raw/KDDCup2015/train/enrollment_train.csv
+data/raw/KDDCup2015/train/truth_train.csv
+data/raw/KDDCup2015/train/log_train.csv
+data/raw/KDDCup2015/test/enrollment_test.csv
+data/raw/KDDCup2015/test/truth_test.csv
+data/raw/KDDCup2015/test/log_test.csv
+```
+
+Then prepare and run that separate analysis:
+
+```bash
+PCG_DATASET=kdd python3 -c "from src.kdd_preprocess import write_kdd_processed; write_kdd_processed()"
+python3 -u scripts/run_cohort_exchange.py --dataset kdd --reference-baselines --folds 5 --repeats 5 --seed 42 --jobs 5 --bootstrap 2000 --no-hazard --output results/tlt_kdd
+```
+
+## Scope and availability
+
+The evaluation compares populations within a landmark using grouped folds;
+it does not estimate performance on chronologically future cohorts. Cluster
+bootstrap intervals condition on the stored out-of-fold predictions and do
+not include refitting variability. With a small number of presentation clusters,
+nominal percentile coverage should be interpreted cautiously.
+
+Raw datasets, learner-level predictions, membership tables, fold assignments,
+and fitted models are not redistributed here. Local runs regenerate those
+artifacts from the source datasets. Code is licensed under the MIT License;
+datasets retain their respective source terms.

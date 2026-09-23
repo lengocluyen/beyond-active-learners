@@ -1,0 +1,36 @@
+{
+  "dataset": "oulab",
+  "weeks": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16
+  ],
+  "models": [
+    "flat_hgb",
+    "temporal_hgb",
+    "stack_7_full",
+    "base_lr_profile",
+    "base_lr_clickstream",
+    "base_lr_weekly",
+    "base_rf_gini",
+    "base_rf_entropy",
+    "base_svm",
+    "base_knn",
+    "base_dffnn"
+  ],
+  "fit_metadata_file": "protocol.json",
+  "input_sha256": {
+    "budget_performance.csv": "a314c72ef5a90a7684882c6c285a905f88f7e802d5a417d95a2e79a5e9103280",
+    "cohort_composition.csv": "7326943b295ceebe14cb14b7d8054f588d7fc27afaf15ac6915951b99381fdfb",
+    "decision_overlap.csv": "84e5086af150aabaa5ddc78faa49aa7384e4261dfc213a6599b3d78bceafa806",
+    "protocol.json": "5299592806e538575d35ca134b8d70f92991d32acc1abc853fd3a00f3e768c00",
+    "training_evaluation_decomposition.csv": "b931a22d4b924b82293e13beda7bc8eb2356557f61fccb4b6ace451a628dfdd1"
+  },
+  "decomposition_bands": "model interquartile ranges and ranges between path-specific medians; not confidence intervals",
+  "hazard_error_bars": "paired presentation-cluster 95% bootstrap intervals in the saved hazard summary"
+}

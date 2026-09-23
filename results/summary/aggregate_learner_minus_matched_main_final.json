@@ -1,0 +1,86 @@
+[
+  {
+    "metric": "auc",
+    "contrast": "joint_population_difference",
+    "point_learner_minus_matched_main": -0.0013212501222000378,
+    "ci_low": -0.0020547511913672693,
+    "ci_high": -0.00043590677358260803
+  },
+  {
+    "metric": "auc",
+    "contrast": "evaluation_population_shapley",
+    "point_learner_minus_matched_main": -0.0012045243440740767,
+    "ci_low": -0.001891300175246227,
+    "ci_high": -0.00042539789992057577
+  },
+  {
+    "metric": "auc",
+    "contrast": "training_population_shapley",
+    "point_learner_minus_matched_main": -0.00011672577812596105,
+    "ci_low": -0.0004860035066133808,
+    "ci_high": 0.0002602612850847386
+  },
+  {
+    "metric": "pr_auc_risk",
+    "contrast": "joint_population_difference",
+    "point_learner_minus_matched_main": -0.0024773021165704207,
+    "ci_low": -0.003564357168037271,
+    "ci_high": -0.0010248333945200973
+  },
+  {
+    "metric": "pr_auc_risk",
+    "contrast": "evaluation_population_shapley",
+    "point_learner_minus_matched_main": -0.0026561282798432256,
+    "ci_low": -0.003771697409134358,
+    "ci_high": -0.0011669493196805796
+  },
+  {
+    "metric": "pr_auc_risk",
+    "contrast": "training_population_shapley",
+    "point_learner_minus_matched_main": 0.00017882616327280672,
+    "ci_low": -0.0002571454702581882,
+    "ci_high": 0.0006208275268916314
+  },
+  {
+    "metric": "brier",
+    "contrast": "joint_population_difference",
+    "point_learner_minus_matched_main": 0.0002998476481531746,
+    "ci_low": 0.00010009893194316896,
+    "ci_high": 0.0005205289625100071
+  },
+  {
+    "metric": "brier",
+    "contrast": "evaluation_population_shapley",
+    "point_learner_minus_matched_main": 0.0004643447000631214,
+    "ci_low": 9.450881853113549e-05,
+    "ci_high": 0.0009081054704641473
+  },
+  {
+    "metric": "brier",
+    "contrast": "training_population_shapley",
+    "point_learner_minus_matched_main": -0.00016449705190994552,
+    "ci_low": -0.00045505385380846796,
+    "ci_high": 6.323580191668571e-05
+  },
+  {
+    "metric": "ece",
+    "contrast": "joint_population_difference",
+    "point_learner_minus_matched_main": 0.001201005527228573,
+    "ci_low": -0.0004851959342296812,
+    "ci_high": 0.002691987384796984
+  },
+  {
+    "metric": "ece",
+    "contrast": "evaluation_population_shapley",
+    "point_learner_minus_matched_main": 0.0047390783281619775,
+    "ci_low": 0.0007255246148223325,
+    "ci_high": 0.0067030262733373215
+  },
+  {
+    "metric": "ece",
+    "contrast": "training_population_shapley",
+    "point_learner_minus_matched_main": -0.0035380728009334027,
+    "ci_low": -0.005144719508777683,
+    "ci_high": -0.00047341948209164627
+  }
+]

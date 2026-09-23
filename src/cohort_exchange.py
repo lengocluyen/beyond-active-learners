@@ -18,8 +18,9 @@ OULAD exposes registration and withdrawal dates and supports all four arms.
 KDD Cup 2015 has final dropout labels but no withdrawal dates, so only
 ``activity_conditioned`` and ``static_full`` are identified.
 
-All classifiers use presentation-grouped folds.  Fold assignments are created
-once from the labelled roster and reused across protocols.  For uncertainty,
+Classifiers use presentation-grouped folds by default, with learner grouping
+available for the disjoint sensitivity analysis. Fold assignments are created
+once from the labelled roster and reused across protocols. For uncertainty,
 repeated out-of-fold predictions are first averaged per learner; presentation
 clusters are then bootstrapped.  CV folds are never treated as independent
 sampling units.
@@ -32,7 +33,7 @@ import math
 import os
 import re
 from collections.abc import Callable, Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import matplotlib
@@ -60,6 +61,7 @@ from .full_evaluation import (
 )
 from .paths import get_data_path
 from .pcg_ut import KEY, _load_weekly_events
+from .run_provenance import atomic_write_json, collect_run_provenance, sha256_file
 
 
 PRESENTATION = ["code_module", "code_presentation"]
@@ -99,6 +101,14 @@ class BenchmarkConfig:
     cluster: str = "presentation"
     split_unit: str = "presentation"
     jobs: int = 1
+    provenance: dict[str, object] | None = field(default=None, repr=False, compare=False)
+
+
+def _with_run_provenance(config: BenchmarkConfig) -> BenchmarkConfig:
+    """Capture validated artifact fingerprints once for this invocation."""
+    if config.provenance is not None:
+        return config
+    return replace(config, provenance=collect_run_provenance(config.dataset, config.weeks))
 
 
 def _set_dataset(dataset: str) -> None:
@@ -388,6 +398,25 @@ def _protocols_for_dataset(dataset: str) -> tuple[str, ...]:
     return PROTOCOLS if dataset == "oulab" else PROTOCOLS[:2]
 
 
+def fold_assignment_table(config: BenchmarkConfig) -> pd.DataFrame:
+    """Persist the enrolment-level held-out fold for independent split audits."""
+    roster = load_roster(config.dataset)
+    groups = _group_id(roster, config.split_unit)
+    maps = make_fold_maps(
+        roster, config.folds, config.repeats, config.seed, config.split_unit
+    )
+    records = []
+    for repeat, mapping in maps.items():
+        frame = roster[KEY + ["label"]].copy()
+        frame["dataset"] = config.dataset
+        frame["split_unit"] = config.split_unit
+        frame["split_group"] = groups
+        frame["repeat"] = repeat
+        frame["fold"] = groups.map(mapping).astype(int)
+        records.append(frame)
+    return pd.concat(records, ignore_index=True)
+
+
 def _prediction_protocols_for_dataset(dataset: str) -> tuple[str, ...]:
     """Named train/evaluation cells emitted by the landmark benchmark."""
     protocols = _protocols_for_dataset(dataset)
@@ -457,6 +486,28 @@ def _limit_estimator_inner_jobs(estimator: object) -> object:
     return estimator
 
 
+def _predict_evaluation_union(
+    estimator: object,
+    base: pd.DataFrame,
+    feature_cols: list[str],
+    evaluation_specs: tuple[tuple[str, str], ...],
+    fold: int,
+) -> pd.Series:
+    """Score a fitted estimator once; reuse identical scores on overlapping rows.
+
+    Some estimators choose different numerical kernels for different prediction
+    batch sizes. One union batch prevents those differences from contaminating
+    the matched evaluation-population contrast (including k-NN distance ties).
+    """
+    mask = pd.Series(False, index=base.index)
+    for _, population in evaluation_specs:
+        mask |= base[population].astype(bool) & base["_fold"].eq(fold)
+    probabilities = pd.Series(np.nan, index=base.index, dtype=float)
+    if mask.any():
+        probabilities.loc[mask] = estimator.predict_proba(base.loc[mask, feature_cols])[:, 1]
+    return probabilities
+
+
 def run_landmark_benchmark(
     config: BenchmarkConfig,
     verbose: bool = False,
@@ -471,6 +522,7 @@ def run_landmark_benchmark(
     skips completed fits and never needs to retain all repeat-level predictions
     in memory.
     """
+    config = _with_run_provenance(config)
     _set_dataset(config.dataset)
     roster = load_roster(config.dataset)
     fold_maps = make_fold_maps(
@@ -568,6 +620,9 @@ def run_landmark_benchmark(
                         if config.jobs != 1:
                             estimator = _limit_estimator_inner_jobs(estimator)
                         estimator.fit(base.loc[train, feature_cols], y_train)
+                        union_probabilities = _predict_evaluation_union(
+                            estimator, base, feature_cols, evaluation_specs, fold
+                        )
                         records: list[pd.DataFrame] = []
                         for protocol, evaluation_protocol in evaluation_specs:
                             test = (
@@ -577,9 +632,7 @@ def run_landmark_benchmark(
                             y_test = base.loc[test, "label"].astype(int)
                             if len(y_test) == 0 or y_test.nunique() < 2:
                                 continue
-                            probability = estimator.predict_proba(
-                                base.loc[test, feature_cols]
-                            )[:, 1]
+                            probability = union_probabilities.loc[test].to_numpy()
                             record = base.loc[
                                 test,
                                 KEY
@@ -740,6 +793,13 @@ def _cluster_metric_components(
     score_starts = np.r_[
         0, 1 + np.flatnonzero(sorted_p[1:] != sorted_p[:-1])
     ]
+    # AP is evaluated on failure risk, not directly on success probability.
+    # Subtraction can merge adjacent binary floats, so its ties must be
+    # determined after computing the actual score passed to sklearn.
+    sorted_risk = 1.0 - sorted_p
+    risk_starts = np.r_[
+        0, 1 + np.flatnonzero(sorted_risk[1:] != sorted_risk[:-1])
+    ]
 
     squared_error = np.bincount(
         cluster_codes, weights=(y - p) ** 2, minlength=n_clusters
@@ -764,6 +824,7 @@ def _cluster_metric_components(
         "sorted_y": y[score_order].astype(float),
         "sorted_cluster": cluster_codes[score_order],
         "score_starts": score_starts,
+        "risk_starts": risk_starts,
         "squared_error": squared_error,
         "cluster_n": cluster_n,
         "bin_n": bin_n,
@@ -789,6 +850,7 @@ def _weighted_cluster_metric_draws(
     sorted_y = components["sorted_y"]
     sorted_cluster = components["sorted_cluster"].astype(np.int64)
     score_starts = components["score_starts"].astype(np.int64)
+    risk_starts = components["risk_starts"].astype(np.int64)
 
     for start in range(0, len(cluster_counts), batch_size):
         stop = min(start + batch_size, len(cluster_counts))
@@ -815,10 +877,11 @@ def _weighted_cluster_metric_draws(
             where=valid,
         )
 
-        # Failure risk is 1-p, so ascending success probability is descending
-        # risk.  Grouping tied scores reproduces average_precision_score.
-        total = success + failure
-        cumulative_failure = np.cumsum(failure, axis=1)
+        # Ascending p is descending 1-p, but their floating-point tie
+        # partitions can differ. Use risk-score thresholds for AP only.
+        risk_failure = np.add.reduceat(failure_rows, risk_starts, axis=1)
+        total = np.add.reduceat(row_weights, risk_starts, axis=1)
+        cumulative_failure = np.cumsum(risk_failure, axis=1)
         cumulative_total = np.cumsum(total, axis=1)
         precision = np.divide(
             cumulative_failure,
@@ -826,7 +889,7 @@ def _weighted_cluster_metric_draws(
             out=np.zeros_like(cumulative_failure),
             where=cumulative_total > 0,
         )
-        ap_numerator = np.sum(precision * failure, axis=1)
+        ap_numerator = np.sum(precision * risk_failure, axis=1)
         np.divide(
             ap_numerator,
             n_failure,
@@ -863,6 +926,61 @@ def _weighted_cluster_metric_draws(
         # whole metric vector; retain that historical/bootstrap behaviour.
         for metric in METRICS:
             result[metric][start:stop][~valid] = np.nan
+    return result
+
+
+def _weighted_cluster_average_precision_draws(
+    frame: pd.DataFrame,
+    cluster_counts: np.ndarray,
+    cluster_order: np.ndarray,
+    batch_size: int = 128,
+) -> np.ndarray:
+    """Evaluate exact risk-score AP efficiently for supplied cluster draws.
+
+    Pre-aggregate adverse cases and cumulative counts by risk threshold and
+    cluster. This is equivalent to row-level sample weighting, while avoiding
+    a full learner-by-bootstrap matrix. The general metric helper remains an
+    independent row-weight implementation for validation.
+    """
+    result = np.full(len(cluster_counts), np.nan, dtype=float)
+    if frame.empty or not len(cluster_order) or not len(cluster_counts):
+        return result
+    if batch_size < 1:
+        raise ValueError("batch_size must be positive")
+    comp = _cluster_metric_components(frame, cluster_order)
+    starts = comp["risk_starts"].astype(np.int64)
+    codes = comp["sorted_cluster"].astype(np.int64)
+    thresholds = np.searchsorted(starts, np.arange(len(codes)), side="right") - 1
+    shape = (len(starts), len(cluster_order))
+    total = np.zeros(shape, dtype=float)
+    failure = np.zeros(shape, dtype=float)
+    np.add.at(total, (thresholds, codes), 1.0)
+    np.add.at(failure, (thresholds, codes), 1.0 - comp["sorted_y"])
+    cumulative_failure = np.cumsum(failure, axis=0)
+    cumulative_total = np.cumsum(total, axis=0)
+    n_failure_by_cluster = cumulative_failure[-1]
+    n_total_by_cluster = cumulative_total[-1]
+    contributes = failure.sum(axis=1) > 0
+    cumulative_failure = cumulative_failure[contributes]
+    cumulative_total = cumulative_total[contributes]
+    failure = failure[contributes]
+    counts = np.asarray(cluster_counts, dtype=float)
+    if counts.ndim != 2 or counts.shape[1] != len(cluster_order):
+        raise ValueError("cluster_counts columns must match cluster_order")
+    n_failure = counts @ n_failure_by_cluster
+    n_total = counts @ n_total_by_cluster
+    valid = (n_failure > 0) & (n_total > n_failure)
+    for start in range(0, len(counts), batch_size):
+        stop = min(start + batch_size, len(counts))
+        batch = counts[start:stop]
+        precision = batch @ cumulative_failure.T
+        denominator = batch @ cumulative_total.T
+        np.divide(precision, denominator, out=precision, where=denominator > 0)
+        precision[denominator <= 0] = 0.0
+        precision *= batch @ failure.T
+        numerator = precision.sum(axis=1)
+        np.divide(numerator, n_failure[start:stop], out=result[start:stop],
+                  where=valid[start:stop])
     return result
 
 
@@ -1653,6 +1771,7 @@ def _hazard_frame_for_model(
 
 def run_discrete_hazard(config: BenchmarkConfig, verbose: bool = False) -> pd.DataFrame:
     """Pooled person-interval HGB predicting withdrawal within ``hazard_days``."""
+    config = _with_run_provenance(config)
     if config.dataset != "oulab":
         return pd.DataFrame()
     roster = load_roster(config.dataset)
@@ -2005,6 +2124,7 @@ def plot_equity_distortion(coverage: pd.DataFrame, output: Path) -> Path:
 
 
 def write_protocol(config: BenchmarkConfig, output_dir: Path) -> Path:
+    config = _with_run_provenance(config)
     payload = {
         "dataset": config.dataset,
         "weeks": list(config.weeks),
@@ -2015,6 +2135,8 @@ def write_protocol(config: BenchmarkConfig, output_dir: Path) -> Path:
         "budgets": list(config.budgets),
         "bootstrap_iterations": config.bootstrap_iterations,
         "cluster_inference_unit": config.cluster,
+        "split_unit": config.split_unit,
+        "provenance": config.provenance,
         "fold_parallel_jobs": config.jobs,
         "hazard_days": config.hazard_days,
         "cohort_protocols": list(_protocols_for_dataset(config.dataset)),
@@ -2036,8 +2158,16 @@ def write_protocol(config: BenchmarkConfig, output_dir: Path) -> Path:
             else "withdrawal event time unavailable; static_full is the risk-set proxy"
         ),
     }
+    payload["artifacts"] = {
+        name: sha256_file(output_dir / name)
+        for name in (
+            "predictions.csv.gz", "cohort_membership.csv.gz",
+            "cohort_composition.csv", "fold_assignments.csv.gz",
+        )
+        if (output_dir / name).is_file()
+    }
     path = output_dir / "protocol.json"
-    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    atomic_write_json(path, payload)
     return path
 
 
@@ -2056,13 +2186,18 @@ def _checkpoint_signature(
     execution_mode: str = "full",
 ) -> dict[str, object]:
     """Fields that must match before fitted prediction cells can be reused."""
+    config = _with_run_provenance(config)
     return {
-        "schema": 2,
+        "schema": 3,
         "dataset": config.dataset,
+        "weeks": list(config.weeks),
+        "models": list(config.models),
         "folds": config.folds,
         "repeats": config.repeats,
         "seed": config.seed,
         "cluster": config.cluster,
+        "split_unit": config.split_unit,
+        "provenance": config.provenance,
         "prediction_protocols": list(
             _prediction_protocols_for_dataset(config.dataset)
         ),
@@ -2080,20 +2215,32 @@ def _prepare_checkpoint_dir(
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = checkpoint_dir / "manifest.json"
     expected = _checkpoint_signature(config, execution_mode)
+    owned_checkpoints = list(checkpoint_dir.glob("week_[0-9][0-9][0-9]__*.csv.gz"))
+    if owned_checkpoints and not manifest_path.exists():
+        raise ValueError(
+            "Existing checkpoints have no provenance manifest; choose a new "
+            "--output directory. Old predictions cannot be verified."
+        )
+    if manifest_path.exists():
+        observed = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if observed != expected:
+            raise ValueError(
+                "Checkpoint inputs, source code, software or settings changed; "
+                "choose a new --output directory to preserve the previous run."
+            )
+    final_predictions = output_dir / "predictions.csv.gz"
+    if final_predictions.exists() and not _completed_run_matches(config, output_dir):
+        raise ValueError(
+            "Existing final predictions have missing or mismatched provenance, "
+            "settings or artifact hashes; choose a new --output directory."
+        )
     if not resume:
         # The user explicitly requested a clean recomputation.  Limit removal
         # to files created by this checkpoint implementation in the resolved
         # dataset-specific checkpoint directory.
-        for checkpoint in checkpoint_dir.glob("week_[0-9][0-9][0-9]__*.csv.gz"):
+        for checkpoint in owned_checkpoints:
             checkpoint.unlink()
-    if resume and manifest_path.exists():
-        observed = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if observed != expected:
-            raise ValueError(
-                "checkpoint settings do not match this run; use --no-resume "
-                f"or a new --output directory (found {observed}, expected {expected})"
-            )
-    manifest_path.write_text(json.dumps(expected, indent=2), encoding="utf-8")
+    atomic_write_json(manifest_path, expected)
     return checkpoint_dir
 
 
@@ -2111,7 +2258,24 @@ def _completed_run_matches(config: BenchmarkConfig, output_dir: Path) -> bool:
         protocol = json.loads(required[-1].read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return False
-    expected = {
+    expected = _source_protocol_settings(config)
+    expected["protocols"] = list(_prediction_protocols_for_dataset(config.dataset))
+    if not all(protocol.get(key) == value for key, value in expected.items()):
+        return False
+    artifacts = protocol.get("artifacts", {})
+    for name in (
+        "predictions.csv.gz", "cohort_membership.csv.gz",
+        "cohort_composition.csv", "fold_assignments.csv.gz",
+    ):
+        path = output_dir / name
+        if not path.is_file() or artifacts.get(name) != sha256_file(path):
+            return False
+    return True
+
+
+def _source_protocol_settings(config: BenchmarkConfig) -> dict[str, object]:
+    config = _with_run_provenance(config)
+    return {
         "dataset": config.dataset,
         "weeks": list(config.weeks),
         "models": list(config.models),
@@ -2119,9 +2283,9 @@ def _completed_run_matches(config: BenchmarkConfig, output_dir: Path) -> bool:
         "repeats": config.repeats,
         "seed": config.seed,
         "cluster_inference_unit": config.cluster,
-        "protocols": list(_prediction_protocols_for_dataset(config.dataset)),
+        "split_unit": config.split_unit,
+        "provenance": config.provenance,
     }
-    return all(protocol.get(key) == value for key, value in expected.items())
 
 
 def run_cohort_exchange(
@@ -2134,6 +2298,7 @@ def run_cohort_exchange(
     fit_only: bool = False,
 ) -> dict[str, Path]:
     """End-to-end benchmark and publication artifact writer."""
+    config = _with_run_provenance(config)
     output_dir = output_root / config.dataset
     output_dir.mkdir(parents=True, exist_ok=True)
     figures = output_dir / "figures"
@@ -2155,7 +2320,14 @@ def run_cohort_exchange(
         outputs[name] = path
         return path
 
-    if resume and _completed_run_matches(config, output_dir):
+    completed_matches = resume and _completed_run_matches(config, output_dir)
+    fold_path = output_dir / "fold_assignments.csv.gz"
+    if not completed_matches:
+        save("fold_assignments.csv.gz", fold_assignment_table(config))
+    else:
+        outputs["fold_assignments.csv.gz"] = fold_path
+
+    if completed_matches:
         if verbose:
             print(
                 f"[resume-final] {config.dataset}: loading completed landmark "
@@ -2180,15 +2352,7 @@ def run_cohort_exchange(
                 f"(resolved {source_dir})"
             )
         source_protocol = json.loads(source_protocol_path.read_text(encoding="utf-8"))
-        expected_source = {
-            "dataset": config.dataset,
-            "weeks": list(config.weeks),
-            "models": list(config.models),
-            "folds": config.folds,
-            "repeats": config.repeats,
-            "seed": config.seed,
-            "cluster_inference_unit": config.cluster,
-        }
+        expected_source = _source_protocol_settings(config)
         mismatches = {
             key: (source_protocol.get(key), value)
             for key, value in expected_source.items()
@@ -2199,6 +2363,8 @@ def run_cohort_exchange(
                 "augmentation source settings do not match the requested run: "
                 f"{mismatches}"
             )
+        if source_protocol.get("artifacts", {}).get("predictions.csv.gz") != sha256_file(source_predictions_path):
+            raise ValueError("augmentation source predictions have no matching artifact hash")
         if verbose:
             print(
                 f"[augment] reusing completed within-protocol predictions from "
@@ -2267,8 +2433,10 @@ def run_cohort_exchange(
         save("cohort_membership.csv.gz", memberships)
         save("cohort_composition.csv", composition)
 
+    # Commit provenance immediately after fitted outputs. A failure during the
+    # subsequent inference/plotting stage must still leave a verifiable run.
+    outputs["protocol.json"] = write_protocol(config, output_dir)
     if fit_only:
-        outputs["protocol.json"] = write_protocol(config, output_dir)
         return outputs
 
     summary = cluster_bootstrap_summary(

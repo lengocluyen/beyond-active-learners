@@ -1,0 +1,165 @@
+{
+  "artifacts": {
+    "cohort_composition.csv": "7326943b295ceebe14cb14b7d8054f588d7fc27afaf15ac6915951b99381fdfb",
+    "cohort_membership.csv.gz": "9384b3ed592ce062805a03aa607c01eb3cd0181652c8627a781305583a74bdc7",
+    "fold_assignments.csv.gz": "fab0d68bf08b0cb56516d80ed343667835b3ac71a62ece4fc66a1bf4ae4cdcbe",
+    "predictions.csv.gz": "8b598371fbb5c36b027088b315a19f3f4cc0c99a4795fed4703512c46336a6a0"
+  },
+  "bootstrap_iterations": 2000,
+  "budgets": [
+    0.01,
+    0.05,
+    0.1,
+    0.2
+  ],
+  "cluster_inference_unit": "presentation",
+  "cohort_protocols": [
+    "activity_conditioned",
+    "static_full",
+    "cutoff_valid"
+  ],
+  "dataset": "oulab",
+  "fold_parallel_jobs": 5,
+  "folds": 5,
+  "hazard_days": 7,
+  "models": [
+    "flat_hgb",
+    "temporal_hgb",
+    "stack_7_full",
+    "base_lr_profile",
+    "base_lr_clickstream",
+    "base_lr_weekly",
+    "base_rf_gini",
+    "base_rf_entropy",
+    "base_svm",
+    "base_knn",
+    "base_dffnn"
+  ],
+  "protocols": [
+    "activity_conditioned",
+    "static_full",
+    "cutoff_valid",
+    "activity_to_cutoff_valid",
+    "cutoff_valid_to_activity"
+  ],
+  "provenance": {
+    "input_files": {
+      "data/processed/oulab/assess_weekly_evidence.csv": "76019cad580b76a914bfa132804ecfd65c795c6ab0c19c1f5078bf9c223cc385",
+      "data/processed/oulab/behavioral_week10.csv": "33cb678ffde815b1e79b9cdb08b89d75498859d4fcb13805677038a19dc8048c",
+      "data/processed/oulab/behavioral_week12.csv": "dbdbaf63fa7952a92645b14d33a610985dcd2e987a8806fe2fa75c94786d2b2e",
+      "data/processed/oulab/behavioral_week14.csv": "a9d72e086b50106daa04ee3e35712cc8d61ca5d8091698a68f5b320a3660528b",
+      "data/processed/oulab/behavioral_week16.csv": "a8232600d4a3ce3baa6a489902a058307737580f76be8a61e12751092217ae4f",
+      "data/processed/oulab/behavioral_week2.csv": "d0857aa0623c501e3ea201cb501263d6f31776e1bda848f35beb947c5d6b5998",
+      "data/processed/oulab/behavioral_week4.csv": "ae4a5dde5fd206deee8088825d7a0b8813a39f8feb7c1eeb3123f1c0da9d7a3e",
+      "data/processed/oulab/behavioral_week6.csv": "10d8d6b62b98d562cd2b8ddc499b2b2485aa4dbc09bfeb102596006703eefec6",
+      "data/processed/oulab/behavioral_week8.csv": "c5a0f2b8c17877a8b48b33f3d0ead91f4e3f783c4d8b400af6fa11369a50a4ef",
+      "data/processed/oulab/competencies.csv": "1f8e5ca5f20e4f877bdac43c99944aeb4ad139c536c6755d813b71051e7a1c9d",
+      "data/processed/oulab/labels.csv": "98326f53005fa17fe9eb03c8ddec3e2a7b187de1ab5728d1800ebaf7334e43ed",
+      "data/processed/oulab/static_features.csv": "8172665041264112e1b47cf5926fc337d2fff5f409dba8c4a1bdc4555dd4135d",
+      "data/processed/oulab/temporal_preprocessing.json": "76aa5ea2a118d8f1fafa9db4879d07b3365008f1d78ddfc4714906e7f84719c5",
+      "data/processed/oulab/traversal_week10.csv": "10a2bd0d0e32126743eadc47e9e0214b063cbfcd9acdae995d126accfef9a683",
+      "data/processed/oulab/traversal_week12.csv": "c907579b0ade94d906b16070c87e0a3cd1f8797b2c690223294be60a8c7a1800",
+      "data/processed/oulab/traversal_week14.csv": "fd710a7fffba6184292bcb82cbc6f7cd65a498d1b74a2e096ec9cfe7e1422db5",
+      "data/processed/oulab/traversal_week16.csv": "88d4509c0cb316161711fa7ed425e4f2a899777b473f96729facc9580fa978b1",
+      "data/processed/oulab/traversal_week2.csv": "35592ee8659e3ba39493e3ec20c4d930f6130b607c0e4282566e254f78e3a917",
+      "data/processed/oulab/traversal_week4.csv": "95d03125b6c97640f743a74de21fe4282815e598e5b726c6e50555b8691343ad",
+      "data/processed/oulab/traversal_week6.csv": "533d99b9934e984fee9bb79e5c9d888cb5b69f22f05e88c6404843443f21720e",
+      "data/processed/oulab/traversal_week8.csv": "7e729acc207b6dbefeb840cfaba0185b94bbdf11ce03f3acb54a8f6d8a2a7252",
+      "data/processed/oulab/vle_weekly_evidence.csv": "1979e59b46c0eb5ed922d3164943f322187df8ca3efaef00ba9369b1129a8716",
+      "data/raw/Oulab/assessments.csv": "8cc738fb88ad760571d6f2a23059bfee0ffcae3bcd830514c9cbd5c6d5a046f1",
+      "data/raw/Oulab/studentAssessment.csv": "fd5320786328d05af841ee7dd4b5871b9dada3b9fe9d6a3642b2f42635510a6e",
+      "data/raw/Oulab/studentInfo.csv": "7e6f3e474a5eee00639d2a414a6c7e928745823c2d2c2563ca1780145f99b0d6",
+      "data/raw/Oulab/studentRegistration.csv": "0d32676285372aaf2e7a80304e5b274b4fba24313e2ca4c04317225e1ec90170",
+      "data/raw/Oulab/studentVle.csv": "52668253d876c5becbcb72185977152700cecab2942aca807fecc3dd54b937f0",
+      "data/raw/Oulab/vle.csv": "d1b28303dea802ad87b4484e1196e878e06824850b9a4fe8aa34693439fe87e9",
+      "src/evidence_mapping.py": "67ea882fa996bef3890e16b4c488757b7a2c3887ce22c99aa97d5bddef211f9c",
+      "src/features_behavioral.py": "5220b691c1309cefe67294e0f6dfb1b21c65ede87c4b9fb60d47a7c930bc7259"
+    },
+    "schema": 1,
+    "software_versions": {
+      "joblib": "1.4.2",
+      "numpy": "1.26.4",
+      "pandas": "2.2.3",
+      "python": "3.10.12",
+      "scikit-learn": "1.7.2",
+      "scipy": "1.14.1"
+    },
+    "source_code": {
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/build_competency_graph.py": "96b026ab2a45d49203a0dfecc63245c3fafc9067b35c3b472dd13d873c436fc3",
+      "src/cohort_exchange.py": "4446a098b9dc483d5100f3348ba67b028fabb4ae28927478e3ba628f852c267b",
+      "src/dkt.py": "9c0a6fd1b58539a6a62f9d657e6012b2acf9a8f641f11519617515b281239ea8",
+      "src/event_transformer.py": "02f1b42dcc49f26e999acfb84e95ca3cc8b1006cf82b6b00ded97e9d66a7fea3",
+      "src/evidence_mapping.py": "67ea882fa996bef3890e16b4c488757b7a2c3887ce22c99aa97d5bddef211f9c",
+      "src/features_baselines.py": "267ecefc648a19a15a0beb8fe8312d2f3449e7757991080c0097bec6297d4aa9",
+      "src/features_behavioral.py": "5220b691c1309cefe67294e0f6dfb1b21c65ede87c4b9fb60d47a7c930bc7259",
+      "src/features_pcg.py": "a68bc9b204da6a948646ab79e7796c55dcfc48d7ab5df3ca111d845d6d56ff08",
+      "src/features_static.py": "10c3fb43e3718f0a0d16e840af79f922628ade6a66e7a1afdf2e19afbcfa06fe",
+      "src/final_analysis.py": "c53ff9be26d0727e98ac2b1480f1e7036a45c9ae99f44de773ab3f7f466e9019",
+      "src/full_evaluation.py": "689060fed3bce5447f5f16f45936ed398aecde583adf250dbf3eb617113d2486",
+      "src/gat_pcg.py": "7b37fea16f50096fa249d469fb3e2f461a71322ac14522ffb3ac3d1c9733124a",
+      "src/interpretability.py": "5b6814b174cf75a46bebba2be99e7b06053278ef59d74ccfe7499bf6e6686af7",
+      "src/kdd_preprocess.py": "181404c8988f00afb26dfc0ff45083c01e3fc4e5ce20663a2a7ca0905b60654e",
+      "src/load_oulad.py": "95b8164409a78921c7ac498407cdeda964c6e8d60198113c116fd21802a1de4c",
+      "src/make_labels.py": "175bf9de0042ee95e7cdb392c33cd9e4e7517850bbdecaf87c695400f18d8a3c",
+      "src/paths.py": "2a6e5c2871f6a7a97fc33290ec693ef6bcf296871537862f65447e92cb376796",
+      "src/pcg_consistency.py": "3b58aeb7326394c2ccf5a2767c0d2258bc6972699544f2e5321fe918cc58e7ba",
+      "src/pcg_ontology.py": "e55ab60a36f1eb2f7feba8cf66a4eba667ae3857f35977907f2e453479c01e91",
+      "src/pcg_state.py": "d3e5836e97cdeecf0340618a19ce2423ade5b7386fa2ba4230f4990bd7f31e59",
+      "src/pcg_ut.py": "444d47994a96d3a5b18b21958384d4218afccb9d1a861e343d5573b4810361af",
+      "src/pcg_ut_graph.py": "7f6a2df83ebf3793e72e3f41364f84b757f40dc583b2c4529efdd68ad400bd0c",
+      "src/pcg_ut_plots.py": "0e5024937ca13d6adcfe11b46276aacb160c16ffc9ad727bd3d3a48508749554",
+      "src/plots.py": "50b621c524834d66ea725d8614250003ac854801066589bd470b2822faac4f0d",
+      "src/run_provenance.py": "110ebd53adc7d54fc8d4d035d704540e2238a18ad5f5e35af242c073e3307d4f",
+      "src/sakt.py": "5aa5ee38a7bff93ff01d994bc395f0fb7f3dd2928b14836f68e8f044b5307745",
+      "src/significance.py": "12229a9f14ae7f3dbc9dd874dfef4a535c78c7e44be7010f102e9d8525f0b31d",
+      "src/splitters.py": "2e114c9b9cfdf17f3df30304d5bb9148e6c290bb47327b88cc899dcca91350a3",
+      "src/train_eval.py": "3a77a32bdcf468f1d803550bc6c0c830f5df7f81654acfbc447f7a7d92cb9af0",
+      "src/transformer_weekly.py": "c90c5162d4327b83d51ae7589af504b0149d6234545a0b98c7fc42a0c08525f1",
+      "src/traversal.py": "2aecfbde6463d80156bd481c85c552e964624cb3dacaed7c5c04193891494d93",
+      "src/utils.py": "3cec0b7a86248e29fbdc41e3ae9593fd3572d564ff9f691b0ae667f4b77094fc"
+    },
+    "temporal_policy": "submission_time_v1"
+  },
+  "repeats": 5,
+  "risk_set_note": "registration/withdrawal dates available",
+  "seed": 42,
+  "split_unit": "presentation",
+  "train_evaluation_cells": [
+    {
+      "eval_protocol": "activity_conditioned",
+      "protocol": "activity_conditioned",
+      "train_protocol": "activity_conditioned"
+    },
+    {
+      "eval_protocol": "cutoff_valid",
+      "protocol": "activity_to_cutoff_valid",
+      "train_protocol": "activity_conditioned"
+    },
+    {
+      "eval_protocol": "static_full",
+      "protocol": "static_full",
+      "train_protocol": "static_full"
+    },
+    {
+      "eval_protocol": "cutoff_valid",
+      "protocol": "cutoff_valid",
+      "train_protocol": "cutoff_valid"
+    },
+    {
+      "eval_protocol": "activity_conditioned",
+      "protocol": "cutoff_valid_to_activity",
+      "train_protocol": "cutoff_valid"
+    }
+  ],
+  "weeks": [
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16
+  ]
+}

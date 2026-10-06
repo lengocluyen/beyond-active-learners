@@ -6,30 +6,6 @@ import pandas as pd
 
 from .paths import get_data_path
 
-def build_week_competencies(courses: pd.DataFrame, max_weeks_default: int = 30) -> pd.DataFrame:
-    """
-    Return competencies table:
-    competency_id, code_module, code_presentation, week_index, name
-    """
-    rows = []
-    for _, row in courses.iterrows():
-        mod = row["code_module"]
-        pres = row["code_presentation"]
-        # If you have module_presentation_length, use it; else fallback
-        n_weeks = int(row.get("module_presentation_length", max_weeks_default))
-        n_weeks = max(1, n_weeks)
-        for w in range(1, n_weeks + 1):
-            cid = f"{mod}_{pres}_W{w:02d}"
-            rows.append({
-                "competency_id": cid,
-                "code_module": mod,
-                "code_presentation": pres,
-                "week_index": w,
-                "name": f"{mod}-{pres} week {w}"
-            })
-    return pd.DataFrame(rows)
-
-
 def build_week_competencies_from_vle(
     vle: pd.DataFrame, student_vle: pd.DataFrame
 ) -> pd.DataFrame:

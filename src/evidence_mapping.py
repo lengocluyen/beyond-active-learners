@@ -12,10 +12,29 @@ def day_to_week(day: int) -> int:
     # We map day 0..6 -> week 1, day 7..13 -> week 2, etc.
     if pd.isna(day):
         return np.nan
+    if day < 0:
+        return np.nan
     d = int(day)
-    if d < 0:
-        d = 0
     return (d // 7) + 1
+
+
+def admissible_assessment_submissions(student_assessment: pd.DataFrame) -> pd.DataFrame:
+    """Current-presentation submissions with a recorded, nonnegative event day.
+
+    Banked results describe credit carried from a previous presentation, not a
+    submission event in this presentation. Missing/invalid submission dates
+    cannot be replaced by the scheduled deadline. Upper-cutoff filtering is
+    applied by the weekly loader or by the caller's explicit snapshot window.
+    """
+    required = {"date_submitted", "is_banked"}
+    missing = required.difference(student_assessment.columns)
+    if missing:
+        raise ValueError(f"Assessment evidence requires columns: {sorted(missing)}")
+    frame = student_assessment.copy()
+    frame["date_submitted"] = pd.to_numeric(frame["date_submitted"], errors="coerce")
+    banked = pd.to_numeric(frame["is_banked"], errors="coerce")
+    valid_day = np.isfinite(frame["date_submitted"]) & frame["date_submitted"].ge(0)
+    return frame.loc[valid_day & banked.eq(0)].copy()
 
 def build_vle_weekly_evidence(
     student_vle: pd.DataFrame, vle: pd.DataFrame, competencies: pd.DataFrame | None = None
@@ -26,14 +45,16 @@ def build_vle_weekly_evidence(
       clicks_total, active_days, clicks_by_activity_type_*
     """
     sv = student_vle.copy()
+    sv["date"] = pd.to_numeric(sv["date"], errors="coerce")
+    sv = sv.loc[np.isfinite(sv["date"]) & sv["date"].ge(0)].copy()
     sv["week_index"] = sv["date"].apply(day_to_week)
 
     # Join to get activity_type if you want richer evidence
     v = vle[["id_site", "activity_type"]].copy()
-    sv = sv.merge(v, on="id_site", how="left")
+    sv = sv.merge(v, on="id_site", how="left", validate="many_to_one")
 
     # Total clicks + active days
-    base = (sv.groupby(["id_student", "code_module", "code_presentation", "week_index"])
+    base = (sv.groupby(["id_student", "code_module", "code_presentation", "week_index"], observed=True)
               .agg(clicks_total=("sum_click", "sum"),
                    active_days=("date", "nunique"))
               .reset_index())
@@ -43,7 +64,7 @@ def build_vle_weekly_evidence(
                           columns="activity_type",
                           values="sum_click",
                           aggfunc="sum",
-                          fill_value=0)
+                          fill_value=0, observed=True)
              .reset_index())
 
     # Prefix activity columns
@@ -74,21 +95,27 @@ def build_assess_weekly_evidence(
       id_student, code_module, code_presentation, week_index,
       assess_attempts, assess_score_mean, assess_score_max, assess_score_weighted
     """
-    sa = student_assessment.copy()
-    a = assessments[["id_assessment", "code_module", "code_presentation", "date", "weight"]].copy()
-    df = sa.merge(a, on=["id_assessment"], how="left")
+    sa = admissible_assessment_submissions(student_assessment)
+    a = assessments[["id_assessment", "code_module", "code_presentation", "weight"]].copy()
+    df = sa.merge(a, on="id_assessment", how="left", validate="many_to_one", indicator=True)
+    if not df["_merge"].eq("both").all():
+        raise ValueError("Submission has no matching assessment metadata")
+    df = df.drop(columns="_merge")
 
-    # Prefer assessment date; if missing, fall back to submission date.
-    df["assess_day"] = df["date"]
-    if "date_submitted" in df.columns:
-        df["assess_day"] = df["assess_day"].fillna(df["date_submitted"])
+    # Week w contains days [7*(w-1), 7*w). Consequently the downstream
+    # week_index <= snapshot_week filter excludes submissions on the cutoff.
+    # A due date is schedule information, never evidence that a submission or
+    # its eventual score already existed. No deadline fallback is permitted.
+    df["assess_day"] = df["date_submitted"]
     df["week_index"] = df["assess_day"].apply(day_to_week)
 
-    # Score normalization: score is typically 0..100; keep as 0..1 for fusion
+    # OULAD has no grade-release timestamp. Scores here assume availability at
+    # submission; this explicit assumption is recorded in preprocessing/run
+    # manifests and is not proof of actual grade availability at that time.
     df["score_01"] = df["score"] / 100.0
     df["weight_01"] = df["weight"] / 100.0
 
-    agg = (df.groupby(["id_student", "code_module", "code_presentation", "week_index"])
+    agg = (df.groupby(["id_student", "code_module", "code_presentation", "week_index"], observed=True)
              .agg(assess_attempts=("id_assessment", "count"),
                   assess_score_mean=("score_01", "mean"),
                   assess_score_max=("score_01", "max"),
@@ -101,7 +128,7 @@ def build_assess_weekly_evidence(
     if len(tmp) > 0:
         tmp = tmp.copy()
         tmp["weighted_score"] = tmp["score_01"] * tmp["weight_01"]
-        wsum = (tmp.groupby(["id_student", "code_module", "code_presentation", "week_index"])
+        wsum = (tmp.groupby(["id_student", "code_module", "code_presentation", "week_index"], observed=True)
                   .agg(weight_sum=("weight_01", "sum"),
                        score_weighted_sum=("weighted_score", "sum"))
                   .reset_index())

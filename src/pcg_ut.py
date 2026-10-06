@@ -1,33 +1,15 @@
-"""PCG-UT: uncertainty-aware temporal Personal Competency Graph baseline.
+"""Weekly evidence loading and temporal graph-state features.
 
-This module deliberately uses only numpy, pandas and scikit-learn so that it
-can be run from the project's declared requirements.  It is a reproducible
-first implementation of the PCG-UT architecture:
-
-* weekly behavioural and assessment events are fused into learner-node states;
-* each state stores a mastery proxy, confidence and uncertainty;
-* prerequisite information is propagated along the course progression graph;
-* a calibrated risk head is trained only on graph-state summaries.
-
-The current public datasets do not expose item-to-skill mappings. Consequently
-their nodes remain course progression units.  The implementation keeps the
-state-construction API separate so that genuine competency mappings can replace
-weekly nodes without changing the experiment runner.
+Nodes represent course weeks because the datasets do not provide item-to-skill
+mappings. The cohort-exchange benchmark handles model fitting and evaluation.
 """
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
-import joblib
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.metrics import balanced_accuracy_score, f1_score, roc_auc_score
 
 from .paths import get_data_path
-from .splitters import group_train_test_split
 
 
 KEY = ["id_student", "code_module", "code_presentation"]
@@ -150,86 +132,3 @@ def _state_features(
     if not include_uncertainty:
         out = out.drop(columns=["pcgut_uncertainty_mean", "pcgut_uncertainty_max"])
     return out
-
-
-def build_pcg_ut_features(
-    snapshot_week: int,
-    propagation: str = "chain",
-    include_uncertainty: bool = True,
-) -> pd.DataFrame:
-    """Create PCG-UT features using only events observed by ``snapshot_week``."""
-    return _state_features(
-        _load_weekly_events(snapshot_week),
-        snapshot_week,
-        propagation=propagation,
-        include_uncertainty=include_uncertainty,
-    )
-
-
-def _write_result(results_dir: Path, week: int, metrics: dict, predictions: pd.DataFrame, model: object) -> list[Path]:
-    metrics_dir, preds_dir, models_dir = (results_dir / name for name in ("metrics", "predictions", "models"))
-    for directory in (metrics_dir, preds_dir, models_dir):
-        directory.mkdir(parents=True, exist_ok=True)
-    metrics_path = metrics_dir / f"results_week{week}.json"
-    existing = json.loads(metrics_path.read_text(encoding="utf-8")) if metrics_path.exists() else {}
-    existing["pcg_ut"] = metrics
-    metrics_path.write_text(json.dumps(existing, indent=2), encoding="utf-8")
-    preds_path = preds_dir / f"predictions_week{week}.csv"
-    if preds_path.exists():
-        previous = pd.read_csv(preds_path)
-        if "model" in previous.columns:
-            previous = previous[previous["model"] != "pcg_ut"]
-        predictions = pd.concat([previous, predictions], ignore_index=True)
-    predictions.to_csv(preds_path, index=False)
-    model_path = models_dir / f"model_pcg_ut_week{week}.joblib"
-    joblib.dump(model, model_path)
-    return [metrics_path, preds_path, model_path]
-
-
-def train_eval_pcg_ut_weekly(snapshot_weeks: list[int], random_state: int = 42, verbose: bool = False) -> list[Path]:
-    """Train and evaluate PCG-UT using presentation-level held-out groups."""
-    labels = pd.read_csv(get_data_path("processed/labels.csv"))
-    results_dir = get_data_path("results")
-    outputs: list[Path] = []
-    for week in snapshot_weeks:
-        features = build_pcg_ut_features(week)
-        df = features.merge(labels, on=KEY, how="inner")
-        train_df, test_df = group_train_test_split(df, ["code_module", "code_presentation"], "label")
-        if train_df.empty or test_df.empty or train_df["label"].nunique() < 2:
-            continue
-        feature_cols = [col for col in features.columns if col not in KEY + ["snapshot_week"]]
-        model = HistGradientBoostingClassifier(
-            learning_rate=0.06,
-            max_iter=250,
-            max_leaf_nodes=15,
-            l2_regularization=1.0,
-            random_state=random_state,
-        )
-        model.fit(train_df[feature_cols], train_df["label"].astype(int))
-        proba = model.predict_proba(test_df[feature_cols])[:, 1]
-        pred = (proba >= 0.5).astype(int)
-        y_true = test_df["label"].astype(int).to_numpy()
-        metrics = {
-            "week": week,
-            "model": "pcg_ut",
-            "auc": float(roc_auc_score(y_true, proba)),
-            "f1": float(f1_score(y_true, pred, zero_division=0)),
-            "balanced_accuracy": float(balanced_accuracy_score(y_true, pred)),
-            "n_test": int(len(y_true)),
-            "n_features": len(feature_cols),
-            "description": "uncertainty-aware temporal PCG fusion with prerequisite-chain propagation",
-        }
-        if verbose:
-            print(f"[PCG-UT] week={week} n_train={len(train_df)} n_test={len(test_df)} auc={metrics['auc']:.4f}")
-        prediction_rows = test_df[KEY].copy()
-        prediction_rows["snapshot_week"] = week
-        prediction_rows["model"] = "pcg_ut"
-        prediction_rows["y_true"] = y_true
-        prediction_rows["proba"] = proba
-        prediction_rows["pred"] = pred
-        outputs.extend(_write_result(results_dir, week, metrics, prediction_rows, model))
-    return outputs
-
-
-if __name__ == "__main__":
-    train_eval_pcg_ut_weekly(snapshot_weeks=[2, 4, 6, 8], verbose=True)

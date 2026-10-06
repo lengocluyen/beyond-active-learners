@@ -1,23 +1,10 @@
-"""Week-0 learner features: everything known before any behaviour is observed.
+"""Enrolment and demographic feature construction.
 
-The evaluation harness currently predicts week-2 outcomes from behavioural
-evidence alone, ignoring the whole enrolment record.  That is the main reason
-early snapshots are weak (AUC ~0.67 at week 2): registration timing, prior
-attempts, course load and demographics are all available *before the course
-starts*, and carry signal precisely where behavioural evidence is thinnest.
-
-Leakage discipline
-------------------
-``studentRegistration.date_unregistration`` is excluded outright: it is populated
-only for learners who withdrew, so it encodes the label directly (69% null,
-exactly the non-withdrawn share).  ``studentInfo.final_result`` is the label
-source and is likewise never read as a feature.  Everything below is fixed at
-enrolment and observable at week 0.
+Final outcomes and withdrawal dates are excluded from the feature table.
 """
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 
 from .paths import get_data_path
@@ -114,17 +101,6 @@ def build_static_features() -> pd.DataFrame:
     out["stat_credits_vs_cohort"] = out["stat_studied_credits"] - grouped.transform("mean")
 
     return out
-
-
-def load_static_features() -> pd.DataFrame:
-    """Build (and cache) the week-0 feature table."""
-    path = get_data_path("processed/static_features.csv")
-    if path.exists():
-        return pd.read_csv(path)
-    features = build_static_features()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    features.to_csv(path, index=False)
-    return features
 
 
 if __name__ == "__main__":

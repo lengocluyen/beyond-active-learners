@@ -1,32 +1,8 @@
-"""PCG-UT-G: two-level Personal Competency Graph over week x activity-type nodes.
+"""Graph features over course-week and activity-type nodes.
 
-The original :mod:`src.pcg_ut` instantiates the PCG as a directed *path* over
-progression units.  A path carries no structure beyond ordering, which the
-``temporal_hgb`` baseline already encodes, so its graph ablations cannot
-separate by construction.
-
-This module instantiates a genuinely branching graph using evidence the dataset
-already provides:
-
-* ``WeekCompetency`` nodes ``W_w`` (one per progression unit), and
-* ``ActivityCompetency`` nodes ``(w, a)`` for each VLE activity type ``a``,
-  linked to their week by ``hasSubCompetency``.
-
-Two propagation channels run over that DAG:
-
-``temporal``
-    ``(w, a) -> (w+1, a)`` -- the same modality across consecutive weeks.
-``hierarchy``
-    ``(w, ...) <-> W_w`` -- children inform the week node, the week node gently
-    regularises its children.  This is the channel a path graph does not have.
-
-Because activity types number ~20 rather than ~2, the shuffle ablation here is
-non-degenerate; :func:`_permute` additionally refuses to return the identity.
-
-Nodes remain dataset-grounded rather than domain competencies: activity types
-are *modalities*, not skills.  This module therefore tests whether the PCG-UT
-machinery can exploit branching structure at all, not whether OULAD supports a
-domain competency ontology.
+Temporal edges connect consecutive weeks; hierarchy edges connect each activity
+node to its week. Residual features retain local states and summarize differences
+between connected nodes. Activity types are observed modalities, not skills.
 """
 
 from __future__ import annotations
@@ -34,9 +10,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .paths import get_data_path
-
-KEY = ["id_student", "code_module", "code_presentation"]
+from .pcg_ut import KEY, _load_weekly_events
 
 PROPAGATIONS = (
     "full",
@@ -82,18 +56,6 @@ def _permute(size: int, rng: np.random.Generator) -> np.ndarray:
         if not np.array_equal(candidate, identity):
             return candidate
     return np.roll(identity, 1)
-
-
-def _load_weekly_events(snapshot_week: int) -> pd.DataFrame:
-    vle = pd.read_csv(get_data_path("processed/vle_weekly_evidence.csv"))
-    assess = pd.read_csv(get_data_path("processed/assess_weekly_evidence.csv"))
-    events = vle.merge(
-        assess, on=KEY + ["week_index"], how="outer", suffixes=("", "_assessment")
-    )
-    events["week_index"] = pd.to_numeric(events["week_index"], errors="coerce")
-    events = events[events["week_index"].between(1, snapshot_week)].copy()
-    events["week_index"] = events["week_index"].astype(int)
-    return events
 
 
 def _tensors(

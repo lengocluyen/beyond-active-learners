@@ -1,25 +1,7 @@
-"""Cluster-bootstrap interval for the AGGREGATE decomposition components.
+"""Aggregate decomposition intervals from saved predictions.
 
-Table VI reports medians and identity-preserving means across 88
-model--landmark cells, plus the share of cellwise intervals excluding zero.
-Those shares are descriptive and are not significance tests, so the headline
-claim -- that the evaluation component dominates the training component --
-still lacks a direct interval.
-
-This script supplies one. Within every bootstrap draw the same presentation
-cluster weights are applied to all cells, each component is recomputed, and the
-mean across cells is taken. The percentile interval of that aggregate is a
-direct statement about the quantity the abstract claims.
-
-Aggregating means rather than medians is deliberate: the symmetric attribution
-is an identity within a cell, and the mean is the only summary that preserves
-it, so the aggregate evaluation and training components still sum to the
-aggregate joint difference inside every draw.
-
-Usage
------
-    python scripts/aggregate_decomposition_ci.py \
-        --results results/cohort_exchange_2x2_clean/oulab --n-boot 2000
+Each bootstrap draw applies the same named-presentation weights to all cells.
+Arithmetic means preserve the additive decomposition within each draw.
 """
 
 from __future__ import annotations
@@ -40,6 +22,7 @@ from src.cohort_exchange import (
     CROSS_PROTOCOL_VA,
     METRICS,
     _bootstrap_cluster_counts,
+    metric_values,
     _weighted_cluster_metric_draws,
 )
 
@@ -53,38 +36,73 @@ COMPONENTS = {
 }
 
 
-def aggregate_draws(results: Path, n_boot: int, seed: int) -> dict:
+def aggregate_draws(
+    results: Path, n_boot: int, seed: int, *, return_points: bool = False
+) -> tuple:
+    """Return per-cell draws; optionally include observed aggregate means.
+
+    The default ``(stacks, n_cells)`` return value is retained for callers.
+    With ``return_points=True``, the third value maps metric/component names
+    to the arithmetic mean of the observed cellwise contrasts.
+    """
+    if n_boot < 1:
+        raise ValueError("n_boot must be positive")
     cols = ["week", "model", "protocol", "y", "p_success", "cluster_id"]
-    preds = pd.read_csv(results / "predictions.csv.gz", usecols=cols)
+    # Preserve binary-float score ties as written. The default CSV parser can
+    # merge adjacent probabilities, changing rank metrics after serialization.
+    preds = pd.read_csv(results / "predictions.csv.gz", usecols=cols,
+                        float_precision="round_trip")
     required = {AA, AV, VA, VV}
+    if preds.empty:
+        raise ValueError("No prediction cells are available for aggregate inference")
+    for (week, model), cell in preds.groupby(["week", "model"]):
+        missing = required.difference(cell.protocol)
+        if missing:
+            raise ValueError(f"Incomplete 2x2 cell week={week} model={model}: missing {sorted(missing)}")
+    preds = preds[preds.protocol.isin(required)].copy()
+    if preds.cluster_id.isna().any():
+        raise ValueError("Presentation cluster identifiers must be present for every prediction")
+    # Draw ONE canonical vector of named-cluster multiplicities per bootstrap
+    # replicate. Re-seeding positional draws in each cell is insufficient when
+    # first-occurrence cluster orders differ across weeks or model tables.
+    clusters = np.array(sorted(preds.cluster_id.astype(str).unique()))
+    if not len(clusters):
+        raise ValueError("No presentation clusters are available for aggregate inference")
+    counts = _bootstrap_cluster_counts(n_boot, len(clusters), np.random.default_rng(seed))
 
     # metric -> component -> list of per-cell draw arrays
     stacks: dict[str, dict[str, list[np.ndarray]]] = {
         m: {c: [] for c in COMPONENTS} for m in METRICS
     }
+    point_stacks = {m: {c: [] for c in COMPONENTS} for m in METRICS}
     n_cells = 0
     for (week, model), cell in preds.groupby(["week", "model"]):
-        if not required.issubset(set(cell.protocol)):
-            continue
-        clusters = cell["cluster_id"].dropna().astype(str).unique()
-        # Reseeding per cell reproduces the identical cluster weights in every
-        # cell, which is what makes averaging across cells within a draw valid.
-        rng = np.random.default_rng(seed)
-        counts = _bootstrap_cluster_counts(n_boot, len(clusters), rng)
         draws = {
             p: _weighted_cluster_metric_draws(
                 cell[cell.protocol.eq(p)], counts, clusters
             )
             for p in required
         }
+        points = {p: metric_values(cell[cell.protocol.eq(p)]) for p in required} if return_points else None
         for metric in METRICS:
             for name, weights in COMPONENTS.items():
                 total = np.zeros(n_boot)
                 for protocol, coef in weights.items():
                     total = total + coef * draws[protocol][metric]
                 stacks[metric][name].append(total)
+                if points is not None:
+                    point_stacks[metric][name].append(sum(
+                        coefficient * points[protocol][metric]
+                        for protocol, coefficient in weights.items()
+                    ))
         n_cells += 1
         print(f"  cell {n_cells:>3}: week={week} model={model}", flush=True)
+    if not n_cells:
+        raise ValueError("No complete 2x2 prediction cells are available for aggregate inference")
+    if return_points:
+        observed = {metric: {name: float(np.mean(values)) for name, values in components.items()}
+                    for metric, components in point_stacks.items()}
+        return stacks, n_cells, observed
     return stacks, n_cells
 
 
@@ -96,17 +114,24 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
 
-    stacks, n_cells = aggregate_draws(args.results, args.n_boot, args.seed)
+    stacks, n_cells, observed = aggregate_draws(
+        args.results, args.n_boot, args.seed, return_points=True
+    )
     print(f"\nAggregate mean components over {n_cells} model-landmark cells, "
           f"{args.n_boot} paired presentation-cluster draws\n")
-    print(f"{'metric':<14}{'component':<24}{'mean':>10}{'95% CI':>22}")
+    print("Point estimates are observed cell means; intervals use paired bootstrap draws.")
+    print(f"{'metric':<14}{'component':<24}{'observed mean':>14}{'95% CI':>22}")
     for metric in METRICS:
         for name in COMPONENTS:
             per_cell = np.vstack(stacks[metric][name])       # cells x draws
-            agg = np.nanmean(per_cell, axis=0)               # draws
+            # Retain the same set of cells in every aggregate draw. Dropping an
+            # undefined cell would silently change the target being averaged.
+            agg = np.mean(per_cell, axis=0)                  # draws
             agg = agg[np.isfinite(agg)]
+            if not len(agg):
+                raise ValueError(f"No finite aggregate draws for {metric}/{name}")
             lo, hi = np.quantile(agg, [0.025, 0.975])
-            print(f"{metric:<14}{name:<24}{agg.mean():>+10.4f}"
+            print(f"{metric:<14}{name:<24}{observed[metric][name]:>+14.4f}"
                   f"   [{lo:+.4f}, {hi:+.4f}]")
         print()
 

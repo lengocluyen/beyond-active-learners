@@ -1,0 +1,6 @@
+# Keep bytes stable for the published data and source provenance hashes.
+*.csv -text
+*.json -text
+*.py -text
+*.pdf binary
+*.png binary
